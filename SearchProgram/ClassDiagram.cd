@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BestMatchSearch">
+    <Position X="0.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAEAAAAAAA=</HashCode>
+      <FileName>BestMatchSearch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MatrixData">
+    <Position X="8.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAEAAABAAEAEAAAAAAAgAAAAAAAAAACAAAAAACQAAAA=</HashCode>
+      <FileName>MatrixData.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MatrixSearch">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>MatrixSearch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OrderedSearch">
+    <Position X="5.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAQAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>OrderedSearch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnOrderedSearch">
+    <Position X="3.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgACAAAAAAAAACAA=</HashCode>
+      <FileName>UnOrderedSearch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
