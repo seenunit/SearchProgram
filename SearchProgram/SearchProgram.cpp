@@ -40,10 +40,10 @@ int main(int argc, char **argv) {
         cout << "Enter the number of rows and columns: <row> <column>" << endl;
         cin >> row >> column;
 
-        cout << "Enter the search type and sequence of integers e.g." << endl;
-        cout << "searchSequence 1 3 4 3 234 6 7" << endl;
-        cout << "searchUnordered 1 3 4 2" << endl;
-        cout << "searchBestMatch 2 4 5 3 5" << endl;
+        cout << "Enter the search type and sequence of integers e.g. as given below" << endl;
+        cout << "<searchSequence 1 3 4 3 234 6 7>" << endl;
+        cout << "<searchUnordered 1 3 4 2>" << endl;
+        cout << "<searchBestMatch 2 4 5 3 5>" << endl;
         cout << "Type \"exit\" to exit the program" << endl;
 
         // Validate and read the matrix file
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
         }        
     }
     else {
-        cout << "Not a valid arguments" << endl;
+        cout << "Error: Not a valid arguments" << endl;
     }
 
     cout << "Goodbye.\n";

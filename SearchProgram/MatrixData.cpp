@@ -61,7 +61,7 @@ void MatrixData::IntializeMatrix(vector<string> vecRows) {
         }
     }
     catch (exception ex) {
-        cout << "Matrix intialization is failed due to: " << ex.what() << endl;
+        cout << "Error: Matrix intialization is failed due to: " << ex.what() << endl;
     }
 
 }
@@ -77,7 +77,7 @@ void MatrixData::PrintMatrixData() {
         }
     }
     catch (exception ex) {
-        cout << "Print Matrix failed due to " << ex.what() << endl;
+        cout << "Error: Print Matrix failed due to " << ex.what() << endl;
     }
 }
 
@@ -102,12 +102,12 @@ void MatrixData::SearchSequence(string searchLine) {
             pSearch->SearchSequence(m_Matrix, seqInts);
         }
         else {
-            cout << "Search type is not valid" << endl;
+            cout << "Error: Search type is not valid" << endl;
         }
 
     }
     catch (...) {
-        cout << "Sequence search failed" << endl;
+        cout << "Error: Sequence search failed" << endl;
     }
 }
 
