@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BESTMATCHSEARCH
+#define BESTMATCHSEARCH
+
 #include "MatrixSearch.h"
 class BestMatchSearch :
     public MatrixSearch
@@ -10,3 +12,4 @@ public:
     void SearchSequence(MatrixDataType matrix, vector<int> sequence);
 };
 
+#endif //BESTMATCHSEARCH

@@ -38,7 +38,7 @@ void MatrixData::IntializeMatrix(vector<string> vecRows) {
     try {
         // check input argument
         if (vecRows.size() == 0) {
-            throw exception("Row has no elements");
+            throw runtime_error("Row has no elements");
         }
 
         for (auto row : vecRows)

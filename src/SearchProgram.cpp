@@ -1,5 +1,3 @@
-#pragma once
-
 #include "MatrixData.h"
 #include "OrderedSearch.h"
 #include <fstream>

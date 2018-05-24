@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MATRIXDATA
+#define MATRIXDATA
+
 #include "MatrixSearch.h"
 
 class MatrixData
@@ -29,3 +31,4 @@ private:
     int m_column{};
 };
 
+#endif //MATRIXDATA

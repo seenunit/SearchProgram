@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MATRIXSEARCH
+#define MATRIXSEARCH
 
 #include <iostream>
 #include <vector>
@@ -16,3 +17,4 @@ public:
     virtual void SearchSequence(MatrixDataType, vector<int>) = 0;
 };
 
+#endif //MATRIXSEARCH

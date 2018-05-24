@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ORDEREDSEARCH
+#define ORDEREDSEARCH
+
 #include "MatrixSearch.h"
 class OrderedSearch :
     public MatrixSearch
@@ -11,3 +13,4 @@ public:
     void SearchSequence(MatrixDataType matrix, vector<int> sequence);
 };
 
+#endif //ORDEREDSEARCH
