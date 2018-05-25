@@ -18,33 +18,44 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 {
 	try {
 
-		map<int,int> mapMatchCount;
-		
-		// search the sequence elements in each row
+        vector<int> sortedSequence = vecSequnce;
+
+        // sort the sequence
+        sort(sortedSequence.begin(), sortedSequence.end());
+        
+        // search the sequence elements in each row
 		for (int i = 0; i < matrix.size(); i++) {
 
 			auto row = matrix[i];
 
-			// sort the row for large row size
-			// TODD
+			// sort the row 
+            sort(row.begin(), row.end());
 
-			vector<int> vecValCount;
-			int prev = 0;
-			for (auto val : vecSequnce) {
+			map<int, > vecValCount;
+			int prevCount = 0;
+            int prevValue = 0;
+			for (auto val : sortedSequence) {
+
+                if (prevValue == val) {
+                    continue;
+                }
+                else {
+                    prevValue = val;
+                }
 				
 				// use binary/interpolation search algorithm for optimization
 				// TODO
 
-				int count = LinearFindValueCount(row, val);
+				int count = LinearSearchValueCount(row, val, true);
 
 				if (count == 0)
 					break;				
 
-				if (prev == count)
+				if (prevCount == count)
 					vecValCount.push_back(count);
 				else {
-					if (prev == 0) {
-						prev = count;
+					if (prevCount == 0) {
+						prevCount = count;
 						vecValCount.push_back(count);
 					}
 					else
@@ -54,9 +65,6 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 				}					
 			}
 
-			if (vecValCount.size() == vecSequnce.size()) {
-				mapMatchCount.insert(make_pair(i + 1, vecValCount[0]));
-			}
 
 		}
 		
@@ -79,7 +87,7 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 }
 
 // returns number of times value found in row
-int LinearFindValueCount(vector<int> row, int x)
+int LinearSearchValueCount(vector<int> row, int x, bool bCount)
 {
 	int count = 0;
 	for (auto val : row) {
@@ -87,6 +95,10 @@ int LinearFindValueCount(vector<int> row, int x)
 		{
 			count++;
 		}
+
+        // break the loop for first match
+        if (bCount == false && count > 0)
+            break;
 	}
 
 	return count;

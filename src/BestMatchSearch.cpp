@@ -22,7 +22,7 @@ void BestMatchSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 		for (auto row : matrix) {
 
 			// find sequence match count on row
-			int count = BasicOrderedSearch(row, vecSequnce);
+			int count = LinearSearchSequenceCount(row, vecSequnce, true);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);

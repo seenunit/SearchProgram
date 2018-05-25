@@ -29,7 +29,8 @@ void OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce
 		for (auto row : matrix) {
 
 			// find sequence match count on row
-			int count = BasicOrderedSearch(row, vecSequnce);
+            // check for single sequence match 
+			int count = LinearSearchSequenceCount(row, vecSequnce, false);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);
@@ -64,7 +65,7 @@ Algorithm:
 4. If not matches, Go for next element 
 5. return the number match count
 */
-int BasicOrderedSearch(vector<int> row, vector<int> sequence)
+int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount)
 {
 	int count = 0;
 
@@ -85,6 +86,10 @@ int BasicOrderedSearch(vector<int> row, vector<int> sequence)
 				// if all elements are matching then increase the match count
 				if (j == sequence.size() - 1)
 					count++;
+                
+                // break the loop for first sequence match
+                if (bCount == false && count > 0)
+                    break;
 			}
 		}
 	}

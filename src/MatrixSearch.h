@@ -8,8 +8,8 @@ using namespace std;
 
 typedef vector<vector<int>> MatrixDataType;
 
-int BasicOrderedSearch(vector<int> row, vector<int> sequence);
-int LinearFindValueCount(vector<int> row, int x);
+int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount = false);
+int LinearSearchValueCount(vector<int> row, int x, bool bCount = false);
 
 class MatrixSearch
 {
