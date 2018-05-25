@@ -16,74 +16,67 @@ UnOrderedSearch::~UnOrderedSearch()
 
 void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
 {
-	try {
+    try {
 
-        vector<int> sortedSequence = vecSequnce;
+        map<int, int> mapMatchCount;
 
-        // sort the sequence
-        sort(sortedSequence.begin(), sortedSequence.end());
-        
         // search the sequence elements in each row
-		for (int i = 0; i < matrix.size(); i++) {
+        for (int i = 0; i < matrix.size(); i++) {
 
-			auto row = matrix[i];
+            auto row = matrix[i];
 
-			// sort the row 
-            sort(row.begin(), row.end());
+            // sort the row for large row size
+            // TODD
 
-			map<int, > vecValCount;
-			int prevCount = 0;
-            int prevValue = 0;
-			for (auto val : sortedSequence) {
+            vector<int> vecValCount;
+            int prev = 0;
+            for (auto val : vecSequnce) {
 
-                if (prevValue == val) {
-                    continue;
-                }
+                // use binary/interpolation search algorithm for optimization
+                // TODO
+
+                int count = LinearSearchValueCount(row, val, true);
+
+                if (count == 0)
+                    break;
+
+                if (prev == count)
+                    vecValCount.push_back(count);
                 else {
-                    prevValue = val;
+                    if (prev == 0) {
+                        prev = count;
+                        vecValCount.push_back(count);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-				
-				// use binary/interpolation search algorithm for optimization
-				// TODO
+            }
 
-				int count = LinearSearchValueCount(row, val, true);
+            if (vecValCount.size() == vecSequnce.size()) {
+                mapMatchCount.insert(make_pair(i + 1, vecValCount[0]));
+            }
 
-				if (count == 0)
-					break;				
+        }
 
-				if (prevCount == count)
-					vecValCount.push_back(count);
-				else {
-					if (prevCount == 0) {
-						prevCount = count;
-						vecValCount.push_back(count);
-					}
-					else
-					{
-						break;
-					}						
-				}					
-			}
+        cout << "UnOrdered match rows: ";
+        // go thorugh match count vector 
+        // display index of vector whose count more than 0
 
+        for (auto it : mapMatchCount) {
+            cout << it.first << " ";
+        }
 
-		}
-		
-		cout << "UnOrdered match rows: ";
-		// go thorugh match count vector 
-		// display index of vector whose count more than 0
+        cout << endl;
+    }
+    catch (exception ex) {
+        cout << "Error: UnOrdered match of sequence failed due to: " << ex.what() << endl;
+    }
 
-		for (auto it : mapMatchCount) {
-			cout << it.first << " ";
-		}
-
-		cout << endl;
-	}
-	catch (exception ex) {
-		cout << "Error: UnOrdered match of sequence failed due to: " << ex.what() << endl;
-	}
-	
 
     return; //TODO
+
 }
 
 // returns number of times value found in row
