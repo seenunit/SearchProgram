@@ -19,8 +19,10 @@ Algorithm:
 4. Display the (index + 1) of vector which are having more than 0 matches
 */
 
-void OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
+vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
 {
+
+	vector<int> vecIndex;
 	try {
 
 		vector<int> vecMatchCount;
@@ -41,6 +43,7 @@ void OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce
 		// display index of vector whose count more than 0
 		for (int i = 0; i < vecMatchCount.size(); i++) {
 			if (vecMatchCount[i] > 0) {
+				vecIndex.push_back(i + 1);
 				cout << i + 1 << " ";
 			}
 		}
@@ -50,7 +53,7 @@ void OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce
 		cout << "Error: Ordered match of sequence failed due to: " << ex.what() << endl;
 	}
 
-    return;
+    return vecIndex;
 }
 
 /*

@@ -14,11 +14,10 @@ UnOrderedSearch::~UnOrderedSearch()
 }
 
 
-void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
+vector<int> UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
 {
+	vector<int> vecIndex;
 	try {
-
-        vector<int> rowMatch;
 
         vector<int> sortedSequence = vecSequnce;
 
@@ -53,14 +52,14 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 
             // if hope still there consider that row
             if (hope == true) {
-                rowMatch.push_back(i + 1);
+                vecIndex.push_back(i + 1);
             }
 		}
 		
 		cout << "UnOrdered match rows: ";
 		// go thorugh match vector 
 		// display index of vector whose count more than 0
-        for (auto index : rowMatch) {
+        for (auto index : vecIndex) {
             cout << index << " ";
         }
 		cout << endl;
@@ -70,7 +69,7 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 	}
 	
 
-    return; //TODO
+    return vecIndex;
 }
 
 // returns number of times value found in row

@@ -20,7 +20,7 @@ int LinearSearchValue(vector<int> row, int x);
 class MatrixSearch
 {
 public:
-    virtual void SearchSequence(MatrixDataType, vector<int>) = 0;
+    virtual vector<int> SearchSequence(MatrixDataType, vector<int>) = 0;
 };
 
 #endif //MATRIXSEARCH

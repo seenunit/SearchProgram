@@ -9,7 +9,7 @@ public:
     BestMatchSearch();
     ~BestMatchSearch();
 
-    void SearchSequence(MatrixDataType matrix, vector<int> sequence);
+    vector<int> SearchSequence(MatrixDataType matrix, vector<int> sequence);
 };
 
 #endif //BESTMATCHSEARCH
