@@ -23,7 +23,7 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
         vector<int> sortedSequence = vecSequnce;
 
         // sort the sequence
-        sort(sortedSequence.begin(), sortedSequence.end());
+        //sort(sortedSequence.begin(), sortedSequence.end());
 
         // search the sequence elements in each row
 		for (int i = 0; i < matrix.size(); i++) {
@@ -31,7 +31,7 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 			auto row = matrix[i];
 
 			// sort the row 
-            sort(row.begin(), row.end());
+            //sort(row.begin(), row.end());
 
             bool hope = true;
 			for (auto val : sortedSequence) {
@@ -41,7 +41,8 @@ void UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequn
 
 				int index = LinearSearchValue(row, val);
 
-                if (index == 0) {
+                // if returns -1 then value not found in row
+                if (index == -1) {
                     hope = false;
                     break;
                 }
@@ -94,9 +95,9 @@ int LinearSearchValue(vector<int> row, int x) {
 
     for (size_t i = 0; i < row.size(); i++) {
         if (row[i] == x)
-            return i + 1;
+            return i;
     }
 
     // return 0 if value not find
-    return 0;
+    return -1;
 }

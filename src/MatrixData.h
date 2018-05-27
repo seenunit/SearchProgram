@@ -27,6 +27,7 @@ public:
 
 private:
     MatrixDataType m_Matrix;
+    MatrixDataType m_SortedMatrix;
     int m_row{};
     int m_column{};
 };

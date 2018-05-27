@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
         cout << "Error: Not a valid arguments" << endl;
     }
 
-    cout << "Goodbye.\n";
+    cout << "Press any key to exit";
 
     cin.get();
 

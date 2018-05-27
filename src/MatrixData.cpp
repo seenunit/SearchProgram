@@ -3,6 +3,7 @@
 #include "UnOrderedSearch.h"
 #include "BestMatchSearch.h"
 #include "MatrixGenerator.h"
+#include <algorithm>
 
 void MatrixData::IntializeMatrix(vector<string> vecRows) {
     
@@ -25,6 +26,10 @@ void MatrixData::IntializeMatrix(vector<string> vecRows) {
 
             // push row of int in to matrix
             m_Matrix.push_back(subRow);
+
+            // sort the row
+            sort(subRow.begin(), subRow.end());
+            m_SortedMatrix.push_back(subRow);
 
             // restrict number of rows in matrix
             if (m_Matrix.size() == iRow)
@@ -70,7 +75,12 @@ void MatrixData::SearchSequence(string searchLine) {
         MatrixSearch *pSearch = GetMatrixSearch(searcType);
 
         if (pSearch) {
-            pSearch->SearchSequence(m_Matrix, seqInts);
+            if (searcType == "searchUnordered") {
+                pSearch->SearchSequence(m_SortedMatrix, seqInts);
+            }
+            else {
+                pSearch->SearchSequence(m_Matrix, seqInts);
+            }
         }
         else {
             cout << "Error: Search type is not valid" << endl;

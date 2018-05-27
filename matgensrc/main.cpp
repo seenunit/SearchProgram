@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
         }
     }
 
+    cout << "Press any key to exit";
     cin.get();
 
     return 0;
