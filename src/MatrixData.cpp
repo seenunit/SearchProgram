@@ -1,37 +1,8 @@
-#include <sstream>
 #include "MatrixData.h"
 #include "OrderedSearch.h"
 #include "UnOrderedSearch.h"
 #include "BestMatchSearch.h"
-
-template<class T>
-vector<T> extractStringValues(string str)
-{
-    vector<T> vecValues;
-
-    stringstream ss;
-
-    // Storing the string into string stream
-    ss << str;
-
-    // Running loop till the end of the stream 
-    string temp;
-    T found;
-    while(!ss.eof()) {
-
-        // extracting word by word from stream
-        ss >> temp;
-
-        // Checking the given word is integer or not
-        if (stringstream(temp) >> found)
-            vecValues.push_back(found);
-
-        // To save from space at the end of string
-        temp = "";
-    }
-
-    return vecValues;
-}
+#include "MatrixGenerator.h"
 
 void MatrixData::IntializeMatrix(vector<string> vecRows) {
     
