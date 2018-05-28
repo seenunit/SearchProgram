@@ -57,7 +57,8 @@ void MatrixData::PrintMatrixData() {
     }
 }
 
-void MatrixData::SearchSequence(string searchLine) {
+vector<int> MatrixData::SearchSequence(string searchLine) {
+	vector<int> vecIndex{};
     try {
         // extract sequence from input string
         vector<int> seqInts = extractStringValues<int>(searchLine);
@@ -76,10 +77,10 @@ void MatrixData::SearchSequence(string searchLine) {
 
         if (pSearch) {
             if (searcType == "searchUnordered") {
-                pSearch->SearchSequence(m_SortedMatrix, seqInts);
+				vecIndex = pSearch->SearchSequence(m_SortedMatrix, seqInts);
             }
             else {
-                pSearch->SearchSequence(m_Matrix, seqInts);
+				vecIndex = pSearch->SearchSequence(m_Matrix, seqInts);
             }
         }
         else {
@@ -90,6 +91,8 @@ void MatrixData::SearchSequence(string searchLine) {
     catch (...) {
         cout << "Error: Sequence search failed" << endl;
     }
+
+	return vecIndex;
 }
 
 MatrixSearch* MatrixData::GetMatrixSearch(string searchType) {

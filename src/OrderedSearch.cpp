@@ -22,13 +22,16 @@ Algorithm:
 vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
 {
 
-	vector<int> vecIndex;
+	vector<int> vecIndex{};
 	try {
 
 		vector<int> vecMatchCount;
 
 		// iterate thorugh each row
 		for (auto row : matrix) {
+
+			if (vecSequnce.size() > row.size())
+				continue;
 
 			// find sequence match count on row
             // check for single sequence match 
@@ -41,7 +44,7 @@ vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vec
 		cout << "Ordered match rows: ";
 		// go thorugh match count vector 
 		// display index of vector whose count more than 0
-		for (int i = 0; i < vecMatchCount.size(); i++) {
+		for (size_t i = 0; i < vecMatchCount.size(); i++) {
 			if (vecMatchCount[i] > 0) {
 				vecIndex.push_back(i + 1);
 				cout << i + 1 << " ";
@@ -73,7 +76,7 @@ int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount
 	int count = 0;
 
 	// Iterate through row elements
-	for (int i = 0; i < row.size(); i++) {
+	for (size_t i = 0; i < row.size(); i++) {
 
 		// Check first element of sequence match with the row's ith element 
 		if (row[i] == sequence[0]) {
@@ -81,7 +84,7 @@ int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount
 			// get sub row vector
 			vector<int> subRow(row.begin() + i, row.end());
 
-			for (int j = 1; j < sequence.size() && j < subRow.size(); j++) {
+			for (size_t j = 1; j < sequence.size() && j < subRow.size(); j++) {
 
 				// check sub row element matches with sequence element
 				if (sequence[j] != subRow[j])

@@ -122,6 +122,7 @@
     <ClCompile Include="MatrixGenerator.cpp" />
     <ClCompile Include="OrderedSearch.cpp" />
     <ClCompile Include="SearchProgram.cpp" />
+    <ClCompile Include="TestMatrixSearch.cpp" />
     <ClCompile Include="UnOrderedSearch.cpp" />
   </ItemGroup>
   <ItemGroup>

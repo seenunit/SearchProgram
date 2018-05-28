@@ -22,6 +22,9 @@ vector<int> BestMatchSearch::SearchSequence(MatrixDataType matrix, vector<int> v
 		// iterate thorugh each row
 		for (auto row : matrix) {
 
+			if (vecSequnce.size() > row.size())
+				continue;
+
 			// find sequence match count on row
 			int count = LinearSearchSequenceCount(row, vecSequnce, true);
 
@@ -31,16 +34,20 @@ vector<int> BestMatchSearch::SearchSequence(MatrixDataType matrix, vector<int> v
 
 		// get iterator of max match count in vector
 		auto result = max_element(vecMatchCount.begin(), vecMatchCount.end());
+				
+		// check the max element value greater than 0
+		if (*result > 0) {
 
-		int rowIndex = distance(vecMatchCount.begin(), result) + 1;
+			int rowIndex = distance(vecMatchCount.begin(), result) + 1;
 
-		vecIndex.push_back(rowIndex);
+			vecIndex.push_back(rowIndex);
+		}
 
 		cout << "best match row: ";
 
 		// check the max element value is greater than 0
 		if (*result > 0) {
-			cout << rowIndex << endl;
+			cout << vecIndex[0] << endl;
 		}
 		else {
 			cout << "None" << endl;

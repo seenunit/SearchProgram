@@ -1,3 +1,14 @@
-searchSequence 45 65 67
-searchBestMatch 45 65 67
-searchUnordered 23 23 45
+searchSequence 10 34
+searchUnordered 10 10 34 10
+searchUnordered 29 29 29
+searchUnordered 29 29 29 29 29 29 29
+searchUnordered 23 45 23
+searchUnordered 987 465 23 45 -54
+searchBestMatch 23 45
+searchSequence 29 29
+searchBestMatch 29 29
+searchBestMatch 30 31 32 33
+searchSequence 30 31 32 33
+searchUnordered 30 31 32 33
+searchSequence 12 57 -9 10 34 26 80 10 34 -89 -1
+searchSequence 29 29 29 -78 -54 76 30

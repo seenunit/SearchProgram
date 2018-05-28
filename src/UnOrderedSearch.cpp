@@ -16,7 +16,7 @@ UnOrderedSearch::~UnOrderedSearch()
 
 vector<int> UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
 {
-	vector<int> vecIndex;
+	vector<int> vecIndex{};
 	try {
 
         vector<int> sortedSequence = vecSequnce;
@@ -25,10 +25,13 @@ vector<int> UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> v
         //sort(sortedSequence.begin(), sortedSequence.end());
 
         // search the sequence elements in each row
-		for (int i = 0; i < matrix.size(); i++) {
+		for (size_t i = 0; i < matrix.size(); i++) {
 
 			auto row = matrix[i];
 
+			if (vecSequnce.size() > row.size())
+				continue;
+			
 			// sort the row 
             //sort(row.begin(), row.end());
 

@@ -21,7 +21,7 @@ public:
     int ReadSearchFile(string filename, vector<string> &outSTrings);
 
 private:
-    string m_key{ "netvrita" };
+    string m_key{ "seenunit" };
 };
 
 template<class T>

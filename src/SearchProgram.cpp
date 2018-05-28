@@ -32,7 +32,17 @@ int main(int argc, char **argv) {
     }
     else if (argc == 2 || argc == 3) {
 
-        strDataFile = argv[1];
+		strDataFile = argv[1];
+
+		if (strDataFile == "-test") {
+
+			TestMatrixSearch();
+
+			cout << "Press any key to exit";
+			cin.get();
+
+			return 0;			
+		}
 
         // Validate and read the matrix file
         //vecRowLines = FileRead(strDataFile);

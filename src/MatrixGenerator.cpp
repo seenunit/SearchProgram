@@ -29,7 +29,7 @@ int MatrixGenerator::GenerateMatrixFile(string filename, int row, int column, ve
     string strRW = to_string(row) + " " + to_string(column);
     vecString.push_back(negateLine(m_key + strRW));
 
-    for (size_t i = 0; i < row; i++)
+    for (int i = 0; i < row; i++)
     {
         string line = vecIntValues[i];
         vecString.push_back(negateLine(m_key + line));
@@ -71,7 +71,7 @@ int MatrixGenerator::ReadMatrixFile(string filename, int &row, int &column, vect
             return 0;
         }
 
-        for (size_t i = 0; i < row && getline(infile, strLine); i++) {
+        for (int i = 0; i < row && getline(infile, strLine); i++) {
 
             string line(negateLine(strLine));
                    

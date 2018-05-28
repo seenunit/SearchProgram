@@ -3,6 +3,8 @@
 
 #include "MatrixSearch.h"
 
+void TestMatrixSearch();
+
 class MatrixData
 {
 public:
@@ -20,7 +22,7 @@ public:
 
 public:
     void IntializeMatrix(vector<string> vecStrings);
-    void SearchSequence(string searchSeq);
+    vector<int> SearchSequence(string searchSeq);
     MatrixSearch *GetMatrixSearch(string searchType);
 
     void PrintMatrixData();
