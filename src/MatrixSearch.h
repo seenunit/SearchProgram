@@ -17,6 +17,9 @@ int LinearSearchValueCount(vector<int> row, int x, bool bCount = false);
 // return row index of the value at first encounter
 int LinearSearchValue(vector<int> row, int x);
 
+// return row index of the value at first encounter with binary search
+int BinarySearchValue(vector<int> row, int x);
+
 class MatrixSearch
 {
 public:

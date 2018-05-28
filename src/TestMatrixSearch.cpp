@@ -20,7 +20,7 @@ void TestMatrixSearch() {
 
 	vector<TestData> tests{
 	{ "searchSequence 10 34", vector<int>{2,3} },
-	{ "searchSequence 29 29 29 -78", vector<int>{3,6} },
+	{ "searchSequence 29 29 29 -78", vector<int>{4,6} },
 	{ "searchUnordered 10 10 34 10", vector<int>{} },
 	{ "searchUnordered 29 29 29", vector<int>{4, 5, 6} },
 	{ "searchUnordered 29 29 29 29 29 29 29", vector<int>{} },

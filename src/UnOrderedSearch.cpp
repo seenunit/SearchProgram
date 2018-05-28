@@ -38,19 +38,18 @@ vector<int> UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> v
             bool hope = true;
 			for (auto val : sortedSequence) {
 
-				// use binary/interpolation search algorithm for optimization
-				// TODO
-
-				int index = LinearSearchValue(row, val);
+				// binary search the row for a value
+				int index = BinarySearchValue(row, val);
 
                 // if returns -1 then value not found in row
                 if (index == -1) {
                     hope = false;
                     break;
                 }
-
+				
                 // remove the element at index or negate the value
-                row[index] = -row[index];
+                //row[index] = -row[index];
+				row.erase(row.begin() + index);
 			}
 
             // if hope still there consider that row
@@ -100,6 +99,34 @@ int LinearSearchValue(vector<int> row, int x) {
             return i;
     }
 
-    // return 0 if value not find
+    // return -1 if value not find
     return -1;
+}
+
+// Binary search for a value and returns index
+int BinarySearchValue(vector<int> row, int x)
+{
+	int l = 0;
+	int r = row.size()-1;
+
+	while (r >= l)
+	{
+		int mid = l + (r - l) / 2;
+
+		if (row[mid] == x)
+		{
+			return mid;
+		}
+		if (row[mid] > x)
+		{
+			r = mid - 1;
+		}
+		else
+		{
+			l = mid + 1;
+		}
+	}
+
+	// return -1 if value not find
+	return -1;
 }
