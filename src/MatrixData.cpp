@@ -78,12 +78,6 @@ vector<int> MatrixData::SearchSequence(string searchLine) {
 				vecIndex = pSearch->SearchSequence(m_Matrix, seqInts);
             }
 
-			stringstream ss;
-
-			// Storing the string into string stream
-			ss << searchLine;
-
-
 			// output the row indices
 			cout << searcType << " ";
 			for (auto val : seqInts) {
