@@ -14,46 +14,29 @@ UnOrderedSearch::~UnOrderedSearch()
 }
 
 
-vector<int> UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
+vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence)
 {
 	vector<int> vecIndex{};
 	try {
 
-        vector<int> sortedSequence = vecSequnce;
+        vector<int> sortedSequence = sequence;
 
         // sort the sequence
-        //sort(sortedSequence.begin(), sortedSequence.end());
+        sort(sortedSequence.begin(), sortedSequence.end());
 
         // search the sequence elements in each row
 		for (size_t i = 0; i < matrix.size(); i++) {
 
 			auto row = matrix[i];
 
-			if (vecSequnce.size() > row.size())
+			if (sequence.size() > row.size())
 				continue;
-			
-			// sort the row 
-            //sort(row.begin(), row.end());
 
-            bool hope = true;
-			for (auto val : sortedSequence) {
-
-				// binary search the row for a value
-				int index = BinarySearchValue(row, val);
-
-                // if returns -1 then value not found in row
-                if (index == -1) {
-                    hope = false;
-                    break;
-                }
-				
-                // remove the element at index or negate the value
-                //row[index] = -row[index];
-				row.erase(row.begin() + index);
-			}
+			// returns 1 of unordered sequence is found
+			int ret = UnorderedSearchSortedSequence(row, sortedSequence);
 
             // if hope still there consider that row
-            if (hope == true) {
+            if (ret == 1) {
                 vecIndex.push_back(i + 1);
             }
 		}
@@ -75,7 +58,7 @@ vector<int> UnOrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> v
 }
 
 // returns number of times value found in row
-int LinearSearchValueCount(vector<int> row, int x, bool bCount) {
+int LinearSearchValueCount(const vector<int> &row, int x, bool bCount) {
 	int count = 0;
 	for (auto val : row) {
 		if (val == x)
@@ -92,7 +75,7 @@ int LinearSearchValueCount(vector<int> row, int x, bool bCount) {
 }
 
 // return row index of the value at first encounter
-int LinearSearchValue(vector<int> row, int x) {
+int LinearSearchValue(const vector<int> &row, int x) {
 
     for (size_t i = 0; i < row.size(); i++) {
         if (row[i] == x)
@@ -103,30 +86,33 @@ int LinearSearchValue(vector<int> row, int x) {
     return -1;
 }
 
-// Binary search for a value and returns index
-int BinarySearchValue(vector<int> row, int x)
-{
-	int l = 0;
-	int r = row.size()-1;
+int UnorderedSearchSortedSequence(const vector<int> &row, const vector<int> &sequence) {
 
-	while (r >= l)
+	int M = sequence.size();
+	int N = row.size();
+
+	int i = 0;  // index for row[]
+	int j = 0;  // index for sequence[]
+	while (i < N)
 	{
-		int mid = l + (r - l) / 2;
+		if (sequence[j] == row[i])
+		{
+			j++;
+			i++;
+		}
 
-		if (row[mid] == x)
+		if (j == M)
 		{
-			return mid;
+			// Found sequence match
+			return 1;
 		}
-		if (row[mid] > x)
+		// mismatch after j matches
+		else if (i < N && sequence[j] != row[i])
 		{
-			r = mid - 1;
-		}
-		else
-		{
-			l = mid + 1;
+			i = i + 1;
 		}
 	}
-
-	// return -1 if value not find
+	
+	// return -1 if unordered sequence not found
 	return -1;
 }

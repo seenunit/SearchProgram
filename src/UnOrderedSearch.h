@@ -9,7 +9,7 @@ public:
     UnOrderedSearch();
     ~UnOrderedSearch();
 
-    vector<int> SearchSequence(MatrixDataType matrix, vector<int> sequence);
+    vector<int> SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence);
 };
 
 #endif //UNORDEREDSEARCH

@@ -19,7 +19,7 @@ Algorithm:
 4. Display the (index + 1) of vector which are having more than 0 matches
 */
 
-vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
+vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence)
 {
 
 	vector<int> vecIndex{};
@@ -27,18 +27,18 @@ vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vec
 
 		vector<int> vecMatchCount;
 
-		vector<int> vecPrefix = GetSequenePrefixVector(vecSequnce);
+		vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
 		// iterate thorugh each row
 		for (auto row : matrix) {
 
-			if (vecSequnce.size() > row.size())
+			if (sequence.size() > row.size())
 				continue;
 
 			// find sequence match count on row
             // check for single sequence match 
 			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
-			int count = KMPSearchSequenceCount(row, vecSequnce, vecPrefix, false);
+			int count = KMPSearchSequenceCount(row, sequence, vecPrefix, false);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);
@@ -74,7 +74,7 @@ Algorithm:
 4. If not matches, Go for next element 
 5. return the number match count
 */
-int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount)
+int LinearSearchSequenceCount(const vector<int> &row, const vector<int> &sequence, bool bCount)
 {
 	int count = 0;
 
@@ -106,8 +106,7 @@ int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount
 	return count;
 }
 
-
-vector<int> GetSequenePrefixVector(vector<int> vecSequence) {
+vector<int> GetSequenePrefixVector(const vector<int> &vecSequence) {
 
 	vector<int> vecLongestPrefix;
 
@@ -142,7 +141,11 @@ vector<int> GetSequenePrefixVector(vector<int> vecSequence) {
 	return vecLongestPrefix;
 }
 
-int KMPSearchSequenceCount(vector<int> row, vector<int> sequence, vector<int> vecSeqPrefix, bool bCount) {
+/*
+Algorithm:
+
+*/
+int KMPSearchSequenceCount(const vector<int> &row, const vector<int> &sequence, const vector<int> &vecSeqPrefix, bool bCount) {
 
 	int count = 0;
 
@@ -165,14 +168,12 @@ int KMPSearchSequenceCount(vector<int> row, vector<int> sequence, vector<int> ve
 			count++;
 
 			// break the loop for first sequence match
-			if (bCount == false && count > 0)
+			if (bCount == false)
 				break;
 
 			j = vecSeqPrefix[j - 1];
 		}
-
-		// mismatch after j matches
-		else if (i < N && sequence[j] != row[i])
+		else if (i < N && sequence[j] != row[i])// mismatch after j matches
 		{
 			// Do not match vecSeqPrefix[0..vecSeqPrefix[j-1]] integers,
 			// they will match anyway

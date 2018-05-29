@@ -10,7 +10,7 @@ public:
     ~OrderedSearch();
 
 public:
-    vector<int> SearchSequence(MatrixDataType matrix, vector<int> sequence);
+    vector<int> SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence);
 };
 
 #endif //ORDEREDSEARCH

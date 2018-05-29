@@ -13,13 +13,14 @@ void MatrixData::IntializeMatrix(vector<string> vecRows) {
             throw runtime_error("Row has no elements");
         }
 
+		int iRow = (m_row != vecRows.size()) ? vecRows.size() : m_row;
+
         for (auto row : vecRows)
         {
             // extract integers from row string
             vector<int> vecRow = extractStringValues<int>(row);
 
-            int iCol = (m_column == 0) ? vecRow.size() : m_column;
-            int iRow = (m_row == 0) ? vecRows.size() : m_row;
+            int iCol = (m_column != vecRow.size()) ? vecRow.size() : m_column;
 
             // restrict number of columns in row
             vector<int> subRow(vecRow.begin(), vecRow.begin() + iCol);

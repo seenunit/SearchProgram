@@ -12,24 +12,24 @@ BestMatchSearch::~BestMatchSearch()
 {
 }
 
-vector<int> BestMatchSearch::SearchSequence(MatrixDataType matrix, vector<int> vecSequnce)
+vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence)
 {
     vector<int> vecIndex{};
 	try {
 
 		vector<int> vecMatchCount;
 
-		vector<int> vecPrefix = GetSequenePrefixVector(vecSequnce);
+		vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
 		// iterate thorugh each row
 		for (auto row : matrix) {
 
-			if (vecSequnce.size() > row.size())
+			if (sequence.size() > row.size())
 				continue;
 
 			// find sequence match count on row
 			//int count = LinearSearchSequenceCount(row, vecSequnce, true);
-			int count = KMPSearchSequenceCount(row, vecSequnce, vecPrefix, true);
+			int count = KMPSearchSequenceCount(row, sequence, vecPrefix, true);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);

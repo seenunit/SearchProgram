@@ -15,16 +15,20 @@ void TestMatrixSearch() {
 		"12 57 -9 10 34 26 80 10 34 -89",
 		"-34 29 29 29 29 29 -78 -54 76 30",
 		"49 39 29 29 29 29 19 9 59 69",
-		"29 29 29 -78 -54 76 30 -34 29 29 "
+		"29 29 29 -78 -54 76 30 -34 29 29",
+		"35 48 35 35 48 35 35 48 35 35",
+		"35 48 35 35 48 35 35 48 35 26"
 	};
 
 	vector<TestData> tests{
+	{ "searchSequence 35 48 35 35", vector<int>{7, 8} },
+	{ "searchBestMatch 35 48 35 35", vector<int>{7} },
+	{ "searchUnordered 23 45 23", vector<int>{1} },
+	{ "searchUnordered 29 29 29", vector<int>{4, 5, 6} },
 	{ "searchSequence 10 34", vector<int>{2,3} },
 	{ "searchSequence 29 29 29 -78", vector<int>{4,6} },
-	{ "searchUnordered 10 10 34 10", vector<int>{} },
-	{ "searchUnordered 29 29 29", vector<int>{4, 5, 6} },
+	{ "searchUnordered 10 10 34 10", vector<int>{} },	
 	{ "searchUnordered 29 29 29 29 29 29 29", vector<int>{} },
-	{ "searchUnordered 23 45 23", vector<int>{1} },
 	{ "searchUnordered 987 465 23 45 -54", vector<int>{} },
 	{ "searchBestMatch 23 45", vector<int>{1} },
 	{ "searchSequence 29 29", vector<int>{4, 5, 6} },
