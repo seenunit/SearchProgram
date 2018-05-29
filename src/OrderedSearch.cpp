@@ -27,6 +27,8 @@ vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vec
 
 		vector<int> vecMatchCount;
 
+		vector<int> vecPrefix = GetSequenePrefixVector(vecSequnce);
+
 		// iterate thorugh each row
 		for (auto row : matrix) {
 
@@ -35,7 +37,8 @@ vector<int> OrderedSearch::SearchSequence(MatrixDataType matrix, vector<int> vec
 
 			// find sequence match count on row
             // check for single sequence match 
-			int count = LinearSearchSequenceCount(row, vecSequnce, false);
+			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
+			int count = KMPSearchSequenceCount(row, vecSequnce, vecPrefix, false);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);
@@ -97,6 +100,86 @@ int LinearSearchSequenceCount(vector<int> row, vector<int> sequence, bool bCount
                 if (bCount == false && count > 0)
                     break;
 			}
+		}
+	}
+
+	return count;
+}
+
+
+vector<int> GetSequenePrefixVector(vector<int> vecSequence) {
+
+	vector<int> vecLongestPrefix;
+
+	int size = vecSequence.size();
+
+	// count of previous value
+	int count = 0;
+
+	// first one is always 0
+	vecLongestPrefix.push_back(0);
+
+	int i = 1;
+	while (i < size) {
+
+		if (vecSequence[i] == vecSequence[count]) {
+			count++;
+			vecLongestPrefix.push_back(count);
+			i++;
+		}
+		else {
+			if (count != 0) {
+				count = vecLongestPrefix[count - 1];
+			}
+			else
+			{
+				vecLongestPrefix.push_back(0);
+				i++;
+			}
+		}
+	}
+
+	return vecLongestPrefix;
+}
+
+int KMPSearchSequenceCount(vector<int> row, vector<int> sequence, vector<int> vecSeqPrefix, bool bCount) {
+
+	int count = 0;
+
+	int M = sequence.size();
+	int N = row.size();
+
+	int i = 0;  // index for row[]
+	int j = 0;  // index for sequence[]
+	while (i < N)
+	{
+		if (sequence[j] == row[i])
+		{
+			j++;
+			i++;
+		}
+
+		if (j == M)
+		{
+			// Found sequence match
+			count++;
+
+			// break the loop for first sequence match
+			if (bCount == false && count > 0)
+				break;
+
+			j = vecSeqPrefix[j - 1];
+		}
+
+		// mismatch after j matches
+		else if (i < N && sequence[j] != row[i])
+		{
+			// Do not match vecSeqPrefix[0..vecSeqPrefix[j-1]] integers,
+			// they will match anyway
+			if (j != 0)
+				j = vecSeqPrefix[j - 1];
+			else
+				i = i + 1;
 		}
 	}
 

@@ -20,6 +20,11 @@ int LinearSearchValue(vector<int> row, int x);
 // return row index of the value at first encounter with binary search
 int BinarySearchValue(vector<int> row, int x);
 
+vector<int> GetSequenePrefixVector(vector<int> vecSequence);
+
+// KMP algorithm search on given row
+int KMPSearchSequenceCount(vector<int> row, vector<int> sequence, vector<int> vecSeqPrefix, bool bCount = false);
+
 class MatrixSearch
 {
 public:
