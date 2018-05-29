@@ -44,16 +44,13 @@ vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, const ve
 			vecMatchCount.push_back(count);
 		}
 
-		cout << "Ordered match rows: ";
 		// go thorugh match count vector 
 		// display index of vector whose count more than 0
 		for (size_t i = 0; i < vecMatchCount.size(); i++) {
 			if (vecMatchCount[i] > 0) {
 				vecIndex.push_back(i + 1);
-				cout << i + 1 << " ";
 			}
 		}
-		cout << endl;
 	}
 	catch (exception ex) {
 		cout << "Error: Ordered match of sequence failed due to: " << ex.what() << endl;

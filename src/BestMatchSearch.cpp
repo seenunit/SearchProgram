@@ -45,16 +45,6 @@ vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const 
 
 			vecIndex.push_back(rowIndex);
 		}
-
-		cout << "best match row: ";
-
-		// check the max element value is greater than 0
-		if (*result > 0) {
-			cout << vecIndex[0] << endl;
-		}
-		else {
-			cout << "None" << endl;
-		}
 	}
 	catch (exception ex) {
 		cout << "Error: Best match of sequence failed due to: " << ex.what() << endl;

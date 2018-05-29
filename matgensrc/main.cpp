@@ -39,6 +39,9 @@ int main(int argc, char **argv) {
 			string line;
 			for (int i = 0; i < row && getline(std::cin, line); i++)
 			{
+				if (line.compare("exit") == 0)
+					return 0;
+
 				if (!line.empty()) {
 					vecIntValues.push_back(line);
 				}

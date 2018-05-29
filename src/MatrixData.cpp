@@ -61,19 +61,13 @@ void MatrixData::PrintMatrixData() {
 vector<int> MatrixData::SearchSequence(string searchLine) {
 	vector<int> vecIndex{};
     try {
+
         // extract sequence from input string
         vector<int> seqInts = extractStringValues<int>(searchLine);
         // extract search type from input i.e. first string token
-        string searcType = extractStringValues<string>(searchLine)[0];
-
-#ifdef DEBUG
-        for (auto val : seqInts) {
-            cout << val << " ";
-        }
-        cout << endl;
-        cout << searcType << endl;
-#endif // DEBUG
-
+		vector<string> seqStrings = extractStringValues<string>(searchLine);
+		string searcType = seqStrings[0];
+		
         MatrixSearch *pSearch = GetMatrixSearch(searcType);
 
         if (pSearch) {
@@ -83,6 +77,29 @@ vector<int> MatrixData::SearchSequence(string searchLine) {
             else {
 				vecIndex = pSearch->SearchSequence(m_Matrix, seqInts);
             }
+
+			stringstream ss;
+
+			// Storing the string into string stream
+			ss << searchLine;
+
+
+			// output the row indices
+			cout << searcType << " ";
+			for (auto val : seqInts) {
+				cout << val << " ";
+			}
+			cout << ": ";
+
+			if(vecIndex.size() == 0){
+				cout << "none";
+			}
+			else {
+				for (auto index : vecIndex) {
+					cout << index << " ";
+				}
+			}
+			cout << endl;
         }
         else {
             cout << "Error: Search type is not valid" << endl;

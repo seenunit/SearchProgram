@@ -70,8 +70,8 @@ int main(int argc, char **argv) {
                 for (string line; std::getline(std::cin, line); )
                 {
                     // exit search program 
-                    if (line.compare("exit") == 0)
-                        break;
+					if (line.compare("exit") == 0)
+						return 0;
 
                     if (!line.empty()) {
                         matrix.SearchSequence(line);

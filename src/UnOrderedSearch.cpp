@@ -35,19 +35,11 @@ vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const 
 			// returns 1 of unordered sequence is found
 			int ret = UnorderedSearchSortedSequence(row, sortedSequence);
 
-            // if hope still there consider that row
+			// add row index to vector if ret is sucessful
             if (ret == 1) {
                 vecIndex.push_back(i + 1);
             }
 		}
-		
-		cout << "UnOrdered match rows: ";
-		// go thorugh match vector 
-		// display index of vector whose count more than 0
-        for (auto index : vecIndex) {
-            cout << index << " ";
-        }
-		cout << endl;
 	}
 	catch (exception ex) {
 		cout << "Error: UnOrdered match of sequence failed due to: " << ex.what() << endl;
