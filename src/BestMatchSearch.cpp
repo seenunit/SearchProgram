@@ -19,6 +19,8 @@ vector<int> BestMatchSearch::SearchSequence(MatrixDataType matrix, vector<int> v
 
 		vector<int> vecMatchCount;
 
+		vector<int> vecPrefix = GetSequenePrefixVector(vecSequnce);
+
 		// iterate thorugh each row
 		for (auto row : matrix) {
 
@@ -26,7 +28,8 @@ vector<int> BestMatchSearch::SearchSequence(MatrixDataType matrix, vector<int> v
 				continue;
 
 			// find sequence match count on row
-			int count = LinearSearchSequenceCount(row, vecSequnce, true);
+			//int count = LinearSearchSequenceCount(row, vecSequnce, true);
+			int count = KMPSearchSequenceCount(row, vecSequnce, vecPrefix, true);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);
