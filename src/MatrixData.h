@@ -14,14 +14,11 @@ public:
         
     }
 
-    MatrixData(int row, int column, vector<string> vecStrings) : m_row(row), m_column(column) {
-        IntializeMatrix(vecStrings);
-    }
-
     ~MatrixData() {};
 
 public:
-    void IntializeMatrix(vector<string> vecStrings);
+	void IntializeMatrix(const vector<string> &vecStrings);
+    void IntializeMatrix(const MatrixDataType &vecRows);
     vector<int> SearchSequence(string searchSeq);
     MatrixSearch *GetMatrixSearch(string searchType);
 

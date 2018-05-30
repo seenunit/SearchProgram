@@ -14,41 +14,41 @@ public:
     ~MatrixGenerator();
 
 public:
-    int GenerateMatrixFile(string filename, int row, int column, vector<string> vecIntValues);
+    int GenerateMatrixFile(const string &filename, int row, int column, const vector<string> &vecIntValues);
 
-    int ReadMatrixFile(string filename, int &row, int &column, vector<string> &outSTrings);
+	int GenerateRandomMatrixFile(const string &filename, int row, int column, bool bText = false);
 
-    int ReadSearchFile(string filename, vector<string> &outSTrings);
+    int ReadMatrixFile(const string &filename, int &row, int &column, vector<vector<int>> &outMatrix);
+
+    int ReadSearchFile(const string &filename, vector<string> &outStrings);
 
 private:
     string m_key{ "seenunit" };
 };
 
 template<class T>
-vector<T> extractStringValues(string str)
+vector<T> extractStringValues(const string &str)
 {
     vector<T> vecValues;
 
-    stringstream ss;
+	// Storing the string into string stream
+    stringstream ss(str);
 
-    // Storing the string into string stream
-    ss << str;
+	// Running loop till the end of the stream 
+	string temp;
+	T found;
+	while (!ss.eof()) {
 
-    // Running loop till the end of the stream 
-    string temp;
-    T found;
-    while (!ss.eof()) {
+		// extracting word by word from stream
+		ss >> temp;
 
-        // extracting word by word from stream
-        ss >> temp;
+		// Checking the given word is integer or not
+		if (stringstream(temp) >> found)
+			vecValues.push_back(found);
 
-        // Checking the given word is integer or not
-        if (stringstream(temp) >> found)
-            vecValues.push_back(found);
-
-        // To save from space at the end of string
-        temp = "";
-    }
+		// To save from space at the end of string
+		temp = "";
+	}
 
     return vecValues;
 }

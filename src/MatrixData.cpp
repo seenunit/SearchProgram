@@ -5,7 +5,45 @@
 #include "MatrixGenerator.h"
 #include <algorithm>
 
-void MatrixData::IntializeMatrix(vector<string> vecRows) {
+void MatrixData::IntializeMatrix(const vector<string> &vecRows) {
+
+	try {
+		// check input argument
+		if (vecRows.size() == 0) {
+			throw runtime_error("Row has no elements");
+		}
+
+		int iRow = (m_row != vecRows.size()) ? vecRows.size() : m_row;
+
+		for (auto row : vecRows)
+		{
+			// extract integers from row string
+			vector<int> vecRow = extractStringValues<int>(row);
+
+			int iCol = (m_column != vecRow.size()) ? vecRow.size() : m_column;
+
+			// restrict number of columns in row
+			vector<int> subRow(vecRow.begin(), vecRow.begin() + iCol);
+
+			// push row of int in to matrix
+			m_Matrix.push_back(subRow);
+
+			// sort the row
+			sort(subRow.begin(), subRow.end());
+			m_SortedMatrix.push_back(subRow);
+
+			// restrict number of rows in matrix
+			if (m_Matrix.size() == iRow)
+				break;
+		}
+	}
+	catch (exception ex) {
+		cout << "Error: Matrix intialization is failed due to: " << ex.what() << endl;
+	}
+
+}
+
+void MatrixData::IntializeMatrix(const MatrixDataType &vecRows) {
     
     try {
         // check input argument
@@ -13,28 +51,13 @@ void MatrixData::IntializeMatrix(vector<string> vecRows) {
             throw runtime_error("Row has no elements");
         }
 
-		int iRow = (m_row != vecRows.size()) ? vecRows.size() : m_row;
+		m_Matrix = vecRows;
 
-        for (auto row : vecRows)
+        for (auto row : m_Matrix)
         {
-            // extract integers from row string
-            vector<int> vecRow = extractStringValues<int>(row);
-
-            int iCol = (m_column != vecRow.size()) ? vecRow.size() : m_column;
-
-            // restrict number of columns in row
-            vector<int> subRow(vecRow.begin(), vecRow.begin() + iCol);
-
-            // push row of int in to matrix
-            m_Matrix.push_back(subRow);
-
             // sort the row
-            sort(subRow.begin(), subRow.end());
-            m_SortedMatrix.push_back(subRow);
-
-            // restrict number of rows in matrix
-            if (m_Matrix.size() == iRow)
-                break;
+            sort(row.begin(), row.end());
+            m_SortedMatrix.push_back(row);
         }
     }
     catch (exception ex) {
@@ -77,14 +100,8 @@ vector<int> MatrixData::SearchSequence(string searchLine) {
             else {
 				vecIndex = pSearch->SearchSequence(m_Matrix, seqInts);
             }
-
+						
 			// output the row indices
-			cout << searcType << " ";
-			for (auto val : seqInts) {
-				cout << val << " ";
-			}
-			cout << ": ";
-
 			if(vecIndex.size() == 0){
 				cout << "none";
 			}
