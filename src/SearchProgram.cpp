@@ -3,14 +3,14 @@
 #include "MatrixGenerator.h"
 #include <fstream>
 
-vector<string> FileRead(string strFileName) {    
+std::vector<std::string> FileRead(std::string strFileName) {    
 
-    vector<string>  vecString;
+    std::vector<std::string>  vecString;
 
-    ifstream infile(strFileName);
+    std::ifstream infile(strFileName);
 
     if (infile.is_open()) {
-        string strLine;
+        std::string strLine;
         while (getline(infile, strLine)) {
             vecString.push_back(strLine);
         }
@@ -21,14 +21,14 @@ vector<string> FileRead(string strFileName) {
 
 int main(int argc, char **argv) {
 
-    string strDataFile;
+    std::string strDataFile;
     MatrixDataType vecRowLines;
     int row, column;
     MatrixGenerator matGen;
 
     if (argc == 1) {
-        cout << "Specify matrix data (.dat) file as argument" << endl;
-        cout << "./SearchProgram matrix.dat <search.txt>" << endl;
+        std::cout << "Specify matrix data (.dat) file as argument" << std::endl;
+        std::cout << "./SearchProgram matrix.dat <search.txt>" << std::endl;
     }
     else if (argc == 2 || argc == 3) {
 
@@ -38,55 +38,55 @@ int main(int argc, char **argv) {
 
 			TestMatrixSearch();
 
-			cout << "Press any key to exit";
-			cin.get();
+			std::cout << "Press any key to exit";
+			std::cin.get();
 
 			return 0;			
 		}
 
         // Validate and read the matrix file
         //vecRowLines = FileRead(strDataFile);
-		cout << "Reading the matrix file" << endl;
+		std::cout << "Reading the matrix file" << std::endl;
         int ret = matGen.ReadMatrixFile(strDataFile, row, column, vecRowLines);
 
         if (ret == 1) {
             
-			cout << "intializing the matrix" << endl;
+			std::cout << "intializing the matrix" << std::endl;
             // Create and intialize matrix
             MatrixData matrix(row, column);
             matrix.IntializeMatrix(vecRowLines);
 
 			if (argc == 3) {
 
-				string strSearchFile = argv[2];
+				std::string strSearchFile = argv[2];
 
-				//vector<string> vecSerachSeqs = FileRead(strSearchFile);
-				vector<string> vecSerachSeqs{};
+				//std::vector<std::string> vecSerachSeqs = FileRead(strSearchFile);
+				std::vector<std::string> vecSerachSeqs{};
 
 				ret = matGen.ReadSearchFile(strSearchFile, vecSerachSeqs);
 
 				if (ret == 1) {
 
-					cout << "Matched row indices" << endl;
+					std::cout << "Matched row indices" << std::endl;
 					for (auto strSearch : vecSerachSeqs) {
 						matrix.SearchSequence(strSearch);
 					}
 				}
 				else {
-					cout << "Error: failed to read search file" << endl;
+					std::cout << "Error: failed to read search file" << std::endl;
 				}
 			}
 
 			// command line interface
-			cout << "==============Command Line Interface for Search Program===============================" << endl;
-			cout << "Enter the search type and sequence of integers e.g. as given below" << endl;
-			cout << "<searchSequence 1 3 4 3 234 6 7>" << endl;
-			cout << "<searchUnordered 1 3 4 2>" << endl;
-			cout << "<searchBestMatch 2 4 5 3 5>" << endl;
-			cout << "or type \"exit\" to exit the program" << endl;
+			std::cout << "==============Command Line Interface for Search Program===============================" << std::endl;
+			std::cout << "Enter the search type and sequence of integers e.g. as given below" << std::endl;
+			std::cout << "<searchSequence 1 3 4 3 234 6 7>" << std::endl;
+			std::cout << "<searchUnordered 1 3 4 2>" << std::endl;
+			std::cout << "<searchBestMatch 2 4 5 3 5>" << std::endl;
+			std::cout << "or type \"exit\" to exit the program" << std::endl;
 
 
-			for (string line; std::getline(std::cin, line); )
+			for (std::string line; std::getline(std::cin, line); )
 			{
 				// exit search program 
 				if (line.compare("exit") == 0)
@@ -98,16 +98,16 @@ int main(int argc, char **argv) {
 			}
         }
         else {
-            cout << "Error: failed to read matrix file" << endl;
+            std::cout << "Error: failed to read matrix file" << std::endl;
         }
     }
     else {
-        cout << "Error: Not a valid arguments" << endl;
+        std::cout << "Error: Not a valid arguments" << std::endl;
     }
 
-    cout << "Press any key to exit";
+    std::cout << "Press any key to exit";
 
-    cin.get();
+    std::cin.get();
 
     return 0;
 }

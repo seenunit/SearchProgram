@@ -12,14 +12,14 @@ BestMatchSearch::~BestMatchSearch()
 {
 }
 
-vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence)
+std::vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const std::vector<int> &sequence)
 {
-    vector<int> vecIndex{};
+    std::vector<int> vecIndex{};
 	try {
 
-		vector<int> vecMatchCount;
+		std::vector<int> vecMatchCount;
 
-		vector<int> vecPrefix = GetSequenePrefixVector(sequence);
+		std::vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
 		// iterate thorugh each row
 		for (auto row : matrix) {
@@ -46,8 +46,8 @@ vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const 
 			vecIndex.push_back(rowIndex);
 		}
 	}
-	catch (exception ex) {
-		cout << "Error: Best match of sequence failed due to: " << ex.what() << endl;
+	catch (std::exception ex) {
+		std::cout << "Error: Best match of sequence failed due to: " << ex.what() << std::endl;
 	}
 
     return vecIndex;

@@ -5,12 +5,12 @@
 #include "MatrixGenerator.h"
 #include <algorithm>
 
-void MatrixData::IntializeMatrix(const vector<string> &vecRows) {
+void MatrixData::IntializeMatrix(const std::vector<std::string> &vecRows) {
 
 	try {
 		// check input argument
 		if (vecRows.size() == 0) {
-			throw runtime_error("Row has no elements");
+			throw std::runtime_error("Row has no elements");
 		}
 
 		int iRow = (m_row != vecRows.size()) ? vecRows.size() : m_row;
@@ -18,12 +18,12 @@ void MatrixData::IntializeMatrix(const vector<string> &vecRows) {
 		for (auto row : vecRows)
 		{
 			// extract integers from row string
-			vector<int> vecRow = extractStringValues<int>(row);
+			std::vector<int> vecRow = extractStringValues<int>(row);
 
 			int iCol = (m_column != vecRow.size()) ? vecRow.size() : m_column;
 
 			// restrict number of columns in row
-			vector<int> subRow(vecRow.begin(), vecRow.begin() + iCol);
+			std::vector<int> subRow(vecRow.begin(), vecRow.begin() + iCol);
 
 			// push row of int in to matrix
 			m_Matrix.push_back(subRow);
@@ -37,8 +37,8 @@ void MatrixData::IntializeMatrix(const vector<string> &vecRows) {
 				break;
 		}
 	}
-	catch (exception ex) {
-		cout << "Error: Matrix intialization is failed due to: " << ex.what() << endl;
+	catch (std::exception ex) {
+		std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
 	}
 
 }
@@ -48,7 +48,7 @@ void MatrixData::IntializeMatrix(const MatrixDataType &vecRows) {
     try {
         // check input argument
         if (vecRows.size() == 0) {
-            throw runtime_error("Row has no elements");
+            throw std::runtime_error("Row has no elements");
         }
 
 		m_Matrix = vecRows;
@@ -60,36 +60,36 @@ void MatrixData::IntializeMatrix(const MatrixDataType &vecRows) {
             m_SortedMatrix.push_back(row);
         }
     }
-    catch (exception ex) {
-        cout << "Error: Matrix intialization is failed due to: " << ex.what() << endl;
+    catch (std::exception ex) {
+        std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
     }
 
 }
 
 void MatrixData::PrintMatrixData() {
     try {
-        cout << "Row: " << m_row << " Column: " << m_column << endl;
+        std::cout << "Row: " << m_row << " Column: " << m_column << std::endl;
         for (auto row : m_Matrix) {
             for (auto col : row) {
-                cout << col << " ";
+                std::cout << col << " ";
             }
-            cout << endl;
+            std::cout << std::endl;
         }
     }
-    catch (exception ex) {
-        cout << "Error: Print Matrix failed due to " << ex.what() << endl;
+    catch (std::exception ex) {
+        std::cout << "Error: Print Matrix failed due to " << ex.what() << std::endl;
     }
 }
 
-vector<int> MatrixData::SearchSequence(string searchLine) {
-	vector<int> vecIndex{};
+std::vector<int> MatrixData::SearchSequence(std::string searchLine) {
+	std::vector<int> vecIndex{};
     try {
 
         // extract sequence from input string
-        vector<int> seqInts = extractStringValues<int>(searchLine);
+        std::vector<int> seqInts = extractStringValues<int>(searchLine);
         // extract search type from input i.e. first string token
-		vector<string> seqStrings = extractStringValues<string>(searchLine);
-		string searcType = seqStrings[0];
+		std::vector<std::string> seqStrings = extractStringValues<std::string>(searchLine);
+		std::string searcType = seqStrings[0];
 		
         MatrixSearch *pSearch = GetMatrixSearch(searcType);
 
@@ -103,28 +103,28 @@ vector<int> MatrixData::SearchSequence(string searchLine) {
 						
 			// output the row indices
 			if(vecIndex.size() == 0){
-				cout << "none";
+				std::cout << "none";
 			}
 			else {
 				for (auto index : vecIndex) {
-					cout << index << " ";
+					std::cout << index << " ";
 				}
 			}
-			cout << endl;
+			std::cout << std::endl;
         }
         else {
-            cout << "Error: Search type is not valid" << endl;
+            std::cout << "Error: Search type is not valid" << std::endl;
         }
 
     }
     catch (...) {
-        cout << "Error: Sequence search failed" << endl;
+        std::cout << "Error: Sequence search failed" << std::endl;
     }
 
 	return vecIndex;
 }
 
-MatrixSearch* MatrixData::GetMatrixSearch(string searchType) {
+MatrixSearch* MatrixData::GetMatrixSearch(std::string searchType) {
 
     MatrixSearch *pSearch = nullptr;
 

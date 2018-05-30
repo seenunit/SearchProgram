@@ -1,15 +1,15 @@
 #include "MatrixData.h"
 
 struct TestData {
-	string input;
-	vector<int> baseOutput;
+	std::string input;
+	std::vector<int> baseOutput;
 };
 
 
 void TestMatrixSearch() {
 
 	// Hardcode the test data
-	vector<string> vecRowLines{
+	std::vector<std::string> vecRowLines{
 		"23 45 12 78 34 27 987 465 23 45",
 		"23 45 12 57 9 64 92 753 10 34",
 		"12 57 -9 10 34 26 80 10 34 -89",
@@ -20,24 +20,24 @@ void TestMatrixSearch() {
 		"35 48 35 35 48 35 35 48 35 26"
 	};
 
-	vector<TestData> tests{
-	{ "searchSequence 35 48 35 35", vector<int>{7, 8} },
-	{ "searchBestMatch 35 48 35 35", vector<int>{7} },
-	{ "searchUnordered 23 45 23", vector<int>{1} },
-	{ "searchUnordered 29 29 29", vector<int>{4, 5, 6} },
-	{ "searchSequence 10 34", vector<int>{2,3} },
-	{ "searchSequence 29 29 29 -78", vector<int>{4,6} },
-	{ "searchUnordered 10 10 34 10", vector<int>{} },	
-	{ "searchUnordered 29 29 29 29 29 29 29", vector<int>{} },
-	{ "searchUnordered 987 465 23 45 -54", vector<int>{} },
-	{ "searchBestMatch 23 45", vector<int>{1} },
-	{ "searchSequence 29 29", vector<int>{4, 5, 6} },
-	{ "searchBestMatch 29 29", vector<int>{4} },
-	{ "searchBestMatch 30 31 32 33", vector<int>{} },
-	{ "searchSequence 30 31 32 33", vector<int>{} },
-	{ "searchUnordered 30 31 32 33", vector<int>{} },
-	{ "searchSequence 12 57 -9 10 34 26 80 10 34 -89 -1", vector<int>{} },
-	{ "searchSequence 29 29 29 -78 -54 76 30", vector<int>{4, 6} }
+	std::vector<TestData> tests{
+	{ "searchSequence 35 48 35 35", std::vector<int>{7, 8} },
+	{ "searchBestMatch 35 48 35 35", std::vector<int>{7} },
+	{ "searchUnordered 23 45 23", std::vector<int>{1} },
+	{ "searchUnordered 29 29 29", std::vector<int>{4, 5, 6} },
+	{ "searchSequence 10 34", std::vector<int>{2,3} },
+	{ "searchSequence 29 29 29 -78", std::vector<int>{4,6} },
+	{ "searchUnordered 10 10 34 10", std::vector<int>{} },	
+	{ "searchUnordered 29 29 29 29 29 29 29", std::vector<int>{} },
+	{ "searchUnordered 987 465 23 45 -54", std::vector<int>{} },
+	{ "searchBestMatch 23 45", std::vector<int>{1} },
+	{ "searchSequence 29 29", std::vector<int>{4, 5, 6} },
+	{ "searchBestMatch 29 29", std::vector<int>{4} },
+	{ "searchBestMatch 30 31 32 33", std::vector<int>{} },
+	{ "searchSequence 30 31 32 33", std::vector<int>{} },
+	{ "searchUnordered 30 31 32 33", std::vector<int>{} },
+	{ "searchSequence 12 57 -9 10 34 26 80 10 34 -89 -1", std::vector<int>{} },
+	{ "searchSequence 29 29 29 -78 -54 76 30", std::vector<int>{4, 6} }
 	};
 
 	// Create and intialize matrix
@@ -47,18 +47,18 @@ void TestMatrixSearch() {
 	matrix.PrintMatrixData();
 
 	// supress cout statements
-	cout.setstate(std::ios_base::failbit);
+	std::cout.setstate(std::ios_base::failbit);
 
-	vector<vector<int>> testsOutput;	
+	std::vector<std::vector<int>> testsOutput;	
 
 	// run through search functions using test data
 	for (auto test : tests) {
-		vector<int> vecIndex = matrix.SearchSequence(test.input);
+		std::vector<int> vecIndex = matrix.SearchSequence(test.input);
 		testsOutput.push_back(vecIndex);
 	}
 	
 	// Revert back to original cout state
-	cout.clear();
+	std::cout.clear();
 
 
 	// Compare base output and test oupt
@@ -66,11 +66,11 @@ void TestMatrixSearch() {
 		auto output = testsOutput[i];
 		auto baseOutPut = tests[i].baseOutput;
 
-		if (equal(output.begin(), output.end(), baseOutPut.begin(), baseOutPut.end()) == true) {
-			cout << tests[i].input << ": " << "passed" << endl;
+		if (output == baseOutPut) {
+			std::cout << tests[i].input << ": " << "passed" << std::endl;
 		}
 		else {
-			cout << tests[i].input << ": " << "failed" << endl;
+			std::cout << tests[i].input << ": " << "failed" << std::endl;
 		}
 	}
 	

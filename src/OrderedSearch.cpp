@@ -19,15 +19,15 @@ Algorithm:
 4. Display the (index + 1) of vector which are having more than 0 matches
 */
 
-vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence)
+std::vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, const std::vector<int> &sequence)
 {
 
-	vector<int> vecIndex{};
+	std::vector<int> vecIndex{};
 	try {
 
-		vector<int> vecMatchCount;
+		std::vector<int> vecMatchCount;
 
-		vector<int> vecPrefix = GetSequenePrefixVector(sequence);
+		std::vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
 		// iterate thorugh each row
 		for (auto row : matrix) {
@@ -52,8 +52,8 @@ vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, const ve
 			}
 		}
 	}
-	catch (exception ex) {
-		cout << "Error: Ordered match of sequence failed due to: " << ex.what() << endl;
+	catch (std::exception ex) {
+		std::cout << "Error: Ordered match of sequence failed due to: " << ex.what() << std::endl;
 	}
 
     return vecIndex;
@@ -71,7 +71,7 @@ Algorithm:
 4. If not matches, Go for next element 
 5. return the number match count
 */
-int LinearSearchSequenceCount(const vector<int> &row, const vector<int> &sequence, bool bCount)
+int LinearSearchSequenceCount(const std::vector<int> &row, const std::vector<int> &sequence, bool bCount)
 {
 	int count = 0;
 
@@ -82,7 +82,7 @@ int LinearSearchSequenceCount(const vector<int> &row, const vector<int> &sequenc
 		if (row[i] == sequence[0]) {
 
 			// get sub row vector
-			vector<int> subRow(row.begin() + i, row.end());
+			std::vector<int> subRow(row.begin() + i, row.end());
 
 			for (size_t j = 1; j < sequence.size() && j < subRow.size(); j++) {
 
@@ -103,9 +103,9 @@ int LinearSearchSequenceCount(const vector<int> &row, const vector<int> &sequenc
 	return count;
 }
 
-vector<int> GetSequenePrefixVector(const vector<int> &vecSequence) {
+std::vector<int> GetSequenePrefixVector(const std::vector<int> &vecSequence) {
 
-	vector<int> vecLongestPrefix;
+	std::vector<int> vecLongestPrefix;
 
 	int size = vecSequence.size();
 
@@ -142,7 +142,7 @@ vector<int> GetSequenePrefixVector(const vector<int> &vecSequence) {
 Algorithm:
 
 */
-int KMPSearchSequenceCount(const vector<int> &row, const vector<int> &sequence, const vector<int> &vecSeqPrefix, bool bCount) {
+int KMPSearchSequenceCount(const std::vector<int> &row, const std::vector<int> &sequence, const std::vector<int> &vecSeqPrefix, bool bCount) {
 
 	int count = 0;
 

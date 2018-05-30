@@ -17,10 +17,10 @@ public:
     ~MatrixData() {};
 
 public:
-	void IntializeMatrix(const vector<string> &vecStrings);
+	void IntializeMatrix(const std::vector<std::string> &vecStrings);
     void IntializeMatrix(const MatrixDataType &vecRows);
-    vector<int> SearchSequence(string searchSeq);
-    MatrixSearch *GetMatrixSearch(string searchType);
+    std::vector<int> SearchSequence(std::string searchSeq);
+    MatrixSearch *GetMatrixSearch(std::string searchType);
 
     void PrintMatrixData();
 

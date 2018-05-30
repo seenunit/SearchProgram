@@ -14,12 +14,12 @@ UnOrderedSearch::~UnOrderedSearch()
 }
 
 
-vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const vector<int> &sequence)
+std::vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const std::vector<int> &sequence)
 {
-	vector<int> vecIndex{};
+	std::vector<int> vecIndex{};
 	try {
 
-        vector<int> sortedSequence = sequence;
+        std::vector<int> sortedSequence = sequence;
 
         // sort the sequence
         sort(sortedSequence.begin(), sortedSequence.end());
@@ -41,8 +41,8 @@ vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const 
             }
 		}
 	}
-	catch (exception ex) {
-		cout << "Error: UnOrdered match of sequence failed due to: " << ex.what() << endl;
+	catch (std::exception ex) {
+		std::cout << "Error: UnOrdered match of sequence failed due to: " << ex.what() << std::endl;
 	}
 	
 
@@ -50,7 +50,7 @@ vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const 
 }
 
 // returns number of times value found in row
-int LinearSearchValueCount(const vector<int> &row, int x, bool bCount) {
+int LinearSearchValueCount(const std::vector<int> &row, int x, bool bCount) {
 	int count = 0;
 	for (auto val : row) {
 		if (val == x)
@@ -67,7 +67,7 @@ int LinearSearchValueCount(const vector<int> &row, int x, bool bCount) {
 }
 
 // return row index of the value at first encounter
-int LinearSearchValue(const vector<int> &row, int x) {
+int LinearSearchValue(const std::vector<int> &row, int x) {
 
     for (size_t i = 0; i < row.size(); i++) {
         if (row[i] == x)
@@ -78,7 +78,7 @@ int LinearSearchValue(const vector<int> &row, int x) {
     return -1;
 }
 
-int UnorderedSearchSortedSequence(const vector<int> &row, const vector<int> &sequence) {
+int UnorderedSearchSortedSequence(const std::vector<int> &row, const std::vector<int> &sequence) {
 
 	int M = sequence.size();
 	int N = row.size();

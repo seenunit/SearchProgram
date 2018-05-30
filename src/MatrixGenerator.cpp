@@ -14,7 +14,7 @@ MatrixGenerator::~MatrixGenerator()
 {
 }
 
-inline string &negateLine(string &line) {
+inline std::string &negateLine(std::string &line) {
 
     for (size_t i = 0; i < line.length(); i++)
     {
@@ -24,16 +24,16 @@ inline string &negateLine(string &line) {
     return line;
 };
 
-int MatrixGenerator::GenerateMatrixFile(const string &filename, int row, int column, const vector<string> &vecIntValues) {
+int MatrixGenerator::GenerateMatrixFile(const std::string &filename, int row, int column, const std::vector<std::string> &vecIntValues) {
 
-    vector<string>  vecString;
+    std::vector<std::string>  vecString;
 
-    string strRW = to_string(row) + " " + to_string(column);
+    std::string strRW = std::to_string(row) + " " + std::to_string(column);
     vecString.push_back(strRW);
 
     for (int i = 0; i < row; i++)
     {
-		string line = vecIntValues[i];
+		std::string line = vecIntValues[i];
         vecString.push_back(line);
     }
 
@@ -41,7 +41,7 @@ int MatrixGenerator::GenerateMatrixFile(const string &filename, int row, int col
     {
         std::ofstream outfile(filename);         
 		for (auto line : vecString) {
-			string nline = m_key + line;
+			std::string nline = m_key + line;
 			outfile << negateLine(nline) << '\n';
 		}
     }
@@ -49,18 +49,18 @@ int MatrixGenerator::GenerateMatrixFile(const string &filename, int row, int col
     return 1;
 }
 
-int MatrixGenerator::GenerateRandomMatrixFile(const string &filename, int row, int column, bool bText) {
+int MatrixGenerator::GenerateRandomMatrixFile(const std::string &filename, int row, int column, bool bText) {
 
-	vector<string>  vecString;
+	std::vector<std::string>  vecString;
 
-	string strRW = to_string(row) + " " + to_string(column);
+	std::string strRW = std::to_string(row) + " " + std::to_string(column);
 	vecString.push_back(strRW);
 
 	// Use current time as seed for random generator
 	srand((unsigned int)time(nullptr));
 	for (int i = 0; i < row; i++)
 	{
-		stringstream ss;
+		std::stringstream ss;
 
 		for (int  j = 0; j < column; j++)
 		{
@@ -86,7 +86,7 @@ int MatrixGenerator::GenerateRandomMatrixFile(const string &filename, int row, i
 
 		if (outfile.is_open()) {
 			for (auto line : vecString) {
-				string nline = m_key + line;
+				std::string nline = m_key + line;
 				outfile << negateLine(nline) << '\n';
 			}
 		}
@@ -99,25 +99,25 @@ int MatrixGenerator::GenerateRandomMatrixFile(const string &filename, int row, i
 	return 1;
 }
 
-int MatrixGenerator::ReadMatrixFile(const string &filename, int &row, int &column, vector<vector<int>> &outMatrix) {
+int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &column, std::vector<std::vector<int>> &outMatrix) {
     
-    ifstream infile(filename);
+    std::ifstream infile(filename);
 
     if (infile.is_open()) {
 
-        string strLine;
+        std::string strLine;
         
         // get row and column from file
         getline(infile, strLine);
 
-        string line(negateLine(strLine));
+        std::string line(negateLine(strLine));
 
-        string key(line.begin(), line.begin() + m_key.length());
+        std::string key(line.begin(), line.begin() + m_key.length());
 
         if (key == m_key) {
 
-            string sequnence(line.begin() + m_key.length(), line.end());
-            vector<int> vecRW = extractStringValues<int>(sequnence);
+            std::string sequnence(line.begin() + m_key.length(), line.end());
+            std::vector<int> vecRW = extractStringValues<int>(sequnence);
 
             row = vecRW[0];
             column = vecRW[1];
@@ -128,13 +128,13 @@ int MatrixGenerator::ReadMatrixFile(const string &filename, int &row, int &colum
 
         for (int i = 0; i < row && getline(infile, strLine); i++) {
 
-            string line(negateLine(strLine));
+            std::string line(negateLine(strLine));
                    
-            string key(line.begin(), line.begin() + m_key.length());
+            std::string key(line.begin(), line.begin() + m_key.length());
             
             if (key == m_key) {
-                string sequnence(line.begin() + m_key.length(), line.end());
-				vector<int> vecIntegers = extractStringValues<int>(sequnence);
+                std::string sequnence(line.begin() + m_key.length(), line.end());
+				std::vector<int> vecIntegers = extractStringValues<int>(sequnence);
 				outMatrix.push_back(vecIntegers);
             }
             else {
@@ -150,12 +150,12 @@ int MatrixGenerator::ReadMatrixFile(const string &filename, int &row, int &colum
 }
 
 
-int MatrixGenerator::ReadSearchFile(const string &filename, vector<string> &outStrings) {
+int MatrixGenerator::ReadSearchFile(const std::string &filename, std::vector<std::string> &outStrings) {
 
-    ifstream infile(filename);
+    std::ifstream infile(filename);
 
     if (infile.is_open()) {
-		string strLine{};
+		std::string strLine{};
         while (getline(infile, strLine)) {
             outStrings.push_back(strLine);
         }
