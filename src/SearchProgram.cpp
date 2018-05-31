@@ -20,6 +20,19 @@ std::vector<std::string> FileRead(std::string strFileName) {
     return vecString;
 }
 
+inline void beginetime(clock_t &time) {
+	if (time != 0)
+		time = clock();
+}
+
+inline void elapsedtimeFile(std::ofstream &timefile, clock_t begin_time) {
+	if (begin_time != 0) {
+		float elapsedtime = float(clock() - begin_time) / CLOCKS_PER_SEC;
+		std::cout << "elapsed time: " << elapsedtime << std::endl;
+		timefile << elapsedtime << '\n';
+	}
+}
+
 int main(int argc, char **argv) {
 
     std::string strDataFile;
@@ -31,7 +44,7 @@ int main(int argc, char **argv) {
         std::cout << "Specify matrix data (.dat) file as argument" << std::endl;
         std::cout << "./SearchProgram matrix.dat <search.txt>" << std::endl;
     }
-    else if (argc == 2 || argc == 3) {
+    else if (argc == 2 || argc == 3 || argc == 4) {
 
 		strDataFile = argv[1];
 
@@ -44,28 +57,33 @@ int main(int argc, char **argv) {
 
 			return 0;			
 		}
-		
-		std::ofstream timefile("time.txt");
-		clock_t begin_time = clock();
+
+		std::ofstream timefile;
+		clock_t begin_time = 0;
+
+		if (argc == 4) {
+
+			std::string timearg = argv[3];
+
+			if (timearg == "-time") {
+				timefile.open("time.txt");
+				begin_time = clock();
+			}
+		}		
 
         // Validate and read the matrix file
         //vecRowLines = FileRead(strDataFile);
 		std::cout << "Reading the matrix file" << std::endl;
         int ret = matGen.ReadMatrixFile(strDataFile, row, column, vecRowLines);
 
-		timefile << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
-
         if (ret == 1) {
             
-			begin_time = clock();
 			std::cout << "intializing the matrix" << std::endl;
             // Create and intialize matrix
             MatrixData matrix(row, column);
             matrix.IntializeMatrix(vecRowLines);
 
-			timefile << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
-
-			if (argc == 3) {
+			if (argc > 2) {
 
 				std::string strSearchFile = argv[2];
 
@@ -78,10 +96,9 @@ int main(int argc, char **argv) {
 
 					std::cout << "Matched row indices" << std::endl;
 					for (auto strSearch : vecSerachSeqs) {
-						begin_time = clock();
+						beginetime(begin_time);
 						matrix.SearchSequence(strSearch);
-
-						timefile << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+						elapsedtimeFile(timefile, begin_time);
 					}
 				}
 				else {
@@ -105,9 +122,9 @@ int main(int argc, char **argv) {
 					return 0;
 
 				if (!line.empty()) {
-					begin_time = clock();
+					beginetime(begin_time);
 					matrix.SearchSequence(line);
-					timefile << float(clock() - begin_time) / CLOCKS_PER_SEC << std::endl;
+					elapsedtimeFile(timefile, begin_time);
 				}
 			}
         }
