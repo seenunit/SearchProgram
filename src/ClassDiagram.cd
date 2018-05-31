@@ -10,7 +10,7 @@
   <Class Name="MatrixData">
     <Position X="8.25" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>gAEAAABAAEAEAAAAAAAgAAAAAAAAAACAAAAAACQAAAA=</HashCode>
+      <HashCode>gAFAAABAAEAEAAAAAAAgAAAAAAAAAACAAAAAACQAAAA=</HashCode>
       <FileName>MatrixData.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -33,6 +33,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgACAAAAAAAAACAA=</HashCode>
       <FileName>UnOrderedSearch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MatrixGenerator">
+    <Position X="8.25" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAIAAAwAAAAAAQAAAAAAAAABCAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MatrixGenerator.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
