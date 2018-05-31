@@ -1,5 +1,5 @@
 #include "OrderedSearch.h"
-
+#include <algorithm>
 
 
 OrderedSearch::OrderedSearch()
@@ -25,29 +25,32 @@ std::vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, con
 	std::vector<int> vecIndex{};
 	try {
 
+		if (sequence.size() > matrix[0].size())
+			throw std::runtime_error("Sequence size is more than matrix row size");
+
 		std::vector<int> vecMatchCount;
 
 		std::vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
 		// iterate thorugh each row
-		for (auto row : matrix) {
+		for (size_t i = 0; i < matrix.size(); i++) {
 
-			if (sequence.size() > row.size())
+			auto row = matrix[i];
+
+			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sequence[0]);
+
+			if (it == row.end())
 				continue;
+
+			std::vector<int> subrow(it, row.end());
 
 			// find sequence match count on row
             // check for single sequence match 
 			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
-			int count = KMPSearchSequenceCount(row, sequence, vecPrefix, false);
+			int count = KMPSearchSequenceCount(subrow, sequence, vecPrefix, false);
 
-			// push match count to vector
-			vecMatchCount.push_back(count);
-		}
-
-		// go thorugh match count vector 
-		// display index of vector whose count more than 0
-		for (size_t i = 0; i < vecMatchCount.size(); i++) {
-			if (vecMatchCount[i] > 0) {
+			// add row index to vector if ret is sucessful
+			if (count > 0) {
 				vecIndex.push_back(i + 1);
 			}
 		}

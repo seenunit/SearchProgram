@@ -17,6 +17,9 @@ std::vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, c
     std::vector<int> vecIndex{};
 	try {
 
+		if (sequence.size() > matrix[0].size())
+			throw std::runtime_error("Sequence size is more than matrix row size");
+
 		std::vector<int> vecMatchCount;
 
 		std::vector<int> vecPrefix = GetSequenePrefixVector(sequence);
@@ -24,12 +27,18 @@ std::vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, c
 		// iterate thorugh each row
 		for (auto row : matrix) {
 
-			if (sequence.size() > row.size())
+			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sequence[0]);
+
+			if (it == row.end()) {
+				vecMatchCount.push_back(0);
 				continue;
+			}
+
+			std::vector<int> subrow(it, row.end());
 
 			// find sequence match count on row
 			//int count = LinearSearchSequenceCount(row, vecSequnce, true);
-			int count = KMPSearchSequenceCount(row, sequence, vecPrefix, true);
+			int count = KMPSearchSequenceCount(subrow, sequence, vecPrefix, true);
 
 			// push match count to vector
 			vecMatchCount.push_back(count);

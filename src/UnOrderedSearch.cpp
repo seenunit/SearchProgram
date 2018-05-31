@@ -18,6 +18,8 @@ std::vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, c
 {
 	std::vector<int> vecIndex{};
 	try {
+		if (sequence.size() > matrix[0].size())
+			throw std::runtime_error("Sequence size is more than matrix row size");
 
         std::vector<int> sortedSequence = sequence;
 
@@ -29,11 +31,15 @@ std::vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, c
 
 			auto row = matrix[i];
 
-			if (sequence.size() > row.size())
+			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sortedSequence[0]);
+
+			if (it == row.end())
 				continue;
 
+			std::vector<int> subrow(it, row.end());
+
 			// returns 1 of unordered sequence is found
-			int ret = UnorderedSearchSortedSequence(row, sortedSequence);
+			int ret = UnorderedSearchSortedSequence(subrow, sortedSequence);
 
 			// add row index to vector if ret is sucessful
             if (ret == 1) {
