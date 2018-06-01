@@ -19,8 +19,9 @@ public:
 public:
 	void IntializeMatrix(const std::vector<std::string> &vecStrings);
     void IntializeMatrix(const MatrixDataType &vecRows);
-    std::vector<int> SearchSequence(std::string searchSeq);
-    MatrixSearch *GetMatrixSearch(std::string searchType);
+    void SearchSequence(const std::string &searchType, const std::vector<int> &sequence, std::vector<int> &vecIndex);
+    MatrixSearch *GetMatrixSearch(const std::string &searchType);
+	void GetSearchInfo(const std::string &searchLine, std::string &searchType, std::vector<int> &sequence);
 
     void PrintMatrixData();
 
@@ -30,5 +31,7 @@ private:
     int m_row{};
     int m_column{};
 };
+
+void TestRandomMatrixSearch(MatrixData &matrix);
 
 #endif //MATRIXDATA

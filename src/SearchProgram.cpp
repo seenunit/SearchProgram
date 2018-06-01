@@ -33,6 +33,19 @@ inline void elapsedtimeFile(std::ofstream &timefile, clock_t begin_time) {
 	}
 }
 
+inline void printIndices(std::vector<int> vecIndex) {
+	// output the row indices
+	if (vecIndex.size() == 0) {
+		std::cout << "none";
+	}
+	else {
+		for (auto index : vecIndex) {
+			std::cout << index << " ";
+		}
+	}
+	std::cout << std::endl;
+}
+
 int main(int argc, char **argv) {
 
     std::string strDataFile;
@@ -83,6 +96,14 @@ int main(int argc, char **argv) {
             MatrixData matrix(row, column);
             matrix.IntializeMatrix(vecRowLines);
 
+			if (argc == 4) {
+				std::string timearg = argv[3];
+
+				if (timearg == "-testtime") {
+					TestRandomMatrixSearch(matrix);
+				}
+			}
+
 			if (argc > 2) {
 
 				std::string strSearchFile = argv[2];
@@ -96,9 +117,19 @@ int main(int argc, char **argv) {
 
 					std::cout << "Matched row indices" << std::endl;
 					for (auto strSearch : vecSerachSeqs) {
+
+						std::string searchType;
+						std::vector<int> sequence;
+
+						matrix.GetSearchInfo(strSearch, searchType, sequence);
+
+						std::vector<int> vecIndex{};
+
 						beginetime(begin_time);
-						matrix.SearchSequence(strSearch);
+						matrix.SearchSequence(searchType, sequence, vecIndex);
 						elapsedtimeFile(timefile, begin_time);
+
+						printIndices(vecIndex);
 					}
 				}
 				else {
@@ -122,9 +153,19 @@ int main(int argc, char **argv) {
 					return 0;
 
 				if (!line.empty()) {
+
+					std::string searchType;
+					std::vector<int> sequence;
+
+					matrix.GetSearchInfo(line, searchType, sequence);
+
+					std::vector<int> vecIndex{};
+
 					beginetime(begin_time);
-					matrix.SearchSequence(line);
+					matrix.SearchSequence(searchType, sequence, vecIndex);
 					elapsedtimeFile(timefile, begin_time);
+
+					printIndices(vecIndex);
 				}
 			}
         }

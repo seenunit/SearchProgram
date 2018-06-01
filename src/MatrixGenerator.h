@@ -27,10 +27,8 @@ private:
 };
 
 template<class T>
-std::vector<T> extractStringValues(const std::string &str)
+void extractStringValues(const std::string &str, std::vector<T> &vecValues)
 {
-    std::vector<T> vecValues;
-
 	// Storing the string into string stream
     std::stringstream ss(str);
 
@@ -50,7 +48,7 @@ std::vector<T> extractStringValues(const std::string &str)
 		temp = "";
 	}
 
-    return vecValues;
+    return;
 }
 
 #endif //MATRIXGENERATOR

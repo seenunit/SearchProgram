@@ -53,7 +53,13 @@ void TestMatrixSearch() {
 
 	// run through search functions using test data
 	for (auto test : tests) {
-		std::vector<int> vecIndex = matrix.SearchSequence(test.input);
+		std::string searchType;
+		std::vector<int> sequence;
+
+		matrix.GetSearchInfo(test.input, searchType, sequence);
+
+		std::vector<int> vecIndex{};
+		matrix.SearchSequence(searchType, sequence, vecIndex);
 		testsOutput.push_back(vecIndex);
 	}
 	
@@ -74,4 +80,64 @@ void TestMatrixSearch() {
 		}
 	}
 	
+}
+
+void TestRandomMatrixSearch(MatrixData &matrix) {
+
+	//std::ofstream timefile;
+	//clock_t begin_time = clock();
+
+
+
+	//std::vector<std::string> tests{};
+
+	//// Use current time as seed for random generator
+	//srand((unsigned int)time(nullptr));
+	//for (int i = 0; i < 1000; i++)
+	//{
+	//	std::stringstream ss;
+
+	//	for (int j = 0; j < 20; j++)
+	//	{
+	//		// Storing the string into string stream
+	//		ss << rand() << " ";
+	//	}
+
+	//}
+	//
+
+	//// supress cout statements
+	//std::cout.setstate(std::ios_base::failbit);
+
+	//std::vector<std::vector<int>> testsOutput;
+
+	//// run through search functions using test data
+	//for (auto test : tests) {
+	//	std::string searchType;
+	//	std::vector<int> sequence;
+
+	//	matrix.GetSearchInfo(test, searchType, sequence);
+
+	//	std::vector<int> vecIndex{};
+	//	matrix.SearchSequence(searchType, sequence, vecIndex);
+	//	testsOutput.push_back(vecIndex);
+	//}
+
+	//// Revert back to original cout state
+	//std::cout.clear();
+
+
+	//// Compare base output and test oupt
+	//for (size_t i = 0; i < testsOutput.size() && i < tests.size(); i++) {
+	//	auto output = testsOutput[i];
+	//	auto baseOutPut = tests[i].baseOutput;
+
+	//	if (output == baseOutPut) {
+	//		std::cout << tests[i].input << ": " << "passed" << std::endl;
+	//	}
+	//	else {
+	//		std::cout << tests[i].input << ": " << "failed" << std::endl;
+	//	}
+	//}
+
 }

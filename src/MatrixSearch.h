@@ -17,6 +17,9 @@ int LinearSearchValueCount(const std::vector<int> &row, int x, bool bCount = fal
 // return row index of the value at first encounter
 int LinearSearchValue(const std::vector<int> &row, int x);
 
+// return true value found in vector
+bool InterpolationSearchValue(const std::vector<int> &row, int x);
+
 // returns the sequence prefix vector
 std::vector<int> GetSequenePrefixVector(const std::vector<int> &vecSequence);
 
@@ -29,7 +32,7 @@ int UnorderedSearchSortedSequence(const std::vector<int> &row, const std::vector
 class MatrixSearch
 {
 public:
-    virtual std::vector<int> SearchSequence(const MatrixDataType &, const std::vector<int> &) = 0;
+    virtual void SearchSequence(const MatrixDataType &, const MatrixDataType &, const std::vector<int> &, std::vector<int> &) = 0;
 };
 
 #endif //MATRIXSEARCH

@@ -14,9 +14,9 @@ UnOrderedSearch::~UnOrderedSearch()
 }
 
 
-std::vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const std::vector<int> &sequence)
+void UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDataType &sortedMatrix, const std::vector<int> &sequence, std::vector<int> &vecIndex)
 {
-	std::vector<int> vecIndex{};
+
 	try {
 		if (sequence.size() > matrix[0].size())
 			throw std::runtime_error("Sequence size is more than matrix row size");
@@ -27,14 +27,16 @@ std::vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, c
         sort(sortedSequence.begin(), sortedSequence.end());
 
         // search the sequence elements in each row
-		for (size_t i = 0; i < matrix.size(); i++) {
+		for (size_t i = 0; i < sortedMatrix.size(); i++) {
 
-			auto row = matrix[i];
+			auto row = sortedMatrix[i];
+
+			//if (std::binary_search(row.begin(), row.end(), sequence[0]) == false) {
+			if (InterpolationSearchValue(row, sequence[0]) == false) {
+				continue;
+			}
 
 			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sortedSequence[0]);
-
-			if (it == row.end())
-				continue;
 
 			std::vector<int> subrow(it, row.end());
 
@@ -52,7 +54,7 @@ std::vector<int> UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, c
 	}
 	
 
-    return vecIndex;
+    return;
 }
 
 // returns number of times value found in row

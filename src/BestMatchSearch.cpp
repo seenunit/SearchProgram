@@ -12,9 +12,8 @@ BestMatchSearch::~BestMatchSearch()
 {
 }
 
-std::vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const std::vector<int> &sequence)
+void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDataType &sortedMatrix, const std::vector<int> &sequence, std::vector<int> &vecIndex)
 {
-    std::vector<int> vecIndex{};
 	try {
 
 		if (sequence.size() > matrix[0].size())
@@ -25,14 +24,19 @@ std::vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, c
 		std::vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
 		// iterate thorugh each row
-		for (auto row : matrix) {
+		for (size_t i = 0; i < matrix.size(); i++) {
 
-			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sequence[0]);
+			auto sortrow = sortedMatrix[i];
 
-			if (it == row.end()) {
+			//if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
+			if(InterpolationSearchValue(sortrow, sequence[0]) == false) {
 				vecMatchCount.push_back(0);
 				continue;
 			}
+
+			auto row = matrix[i];
+
+			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sequence[0]);
 
 			std::vector<int> subrow(it, row.end());
 
@@ -59,5 +63,5 @@ std::vector<int> BestMatchSearch::SearchSequence(const MatrixDataType &matrix, c
 		std::cout << "Error: Best match of sequence failed due to: " << ex.what() << std::endl;
 	}
 
-    return vecIndex;
+    return;
 }

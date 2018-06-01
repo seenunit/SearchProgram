@@ -19,10 +19,9 @@ Algorithm:
 4. Display the (index + 1) of vector which are having more than 0 matches
 */
 
-std::vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, const std::vector<int> &sequence)
+void OrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDataType &sortedMatrix, const std::vector<int> &sequence, std::vector<int> &vecIndex)
 {
 
-	std::vector<int> vecIndex{};
 	try {
 
 		if (sequence.size() > matrix[0].size())
@@ -35,12 +34,16 @@ std::vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, con
 		// iterate thorugh each row
 		for (size_t i = 0; i < matrix.size(); i++) {
 
+			auto sortrow = sortedMatrix[i];
+
+			//if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
+			if (InterpolationSearchValue(sortrow, sequence[0]) == false) {
+				continue;
+			}
+
 			auto row = matrix[i];
 
 			std::vector<int>::iterator it = std::find(row.begin(), row.end(), sequence[0]);
-
-			if (it == row.end())
-				continue;
 
 			std::vector<int> subrow(it, row.end());
 
@@ -59,7 +62,7 @@ std::vector<int> OrderedSearch::SearchSequence(const MatrixDataType &matrix, con
 		std::cout << "Error: Ordered match of sequence failed due to: " << ex.what() << std::endl;
 	}
 
-    return vecIndex;
+    return;
 }
 
 /*
@@ -185,4 +188,32 @@ int KMPSearchSequenceCount(const std::vector<int> &row, const std::vector<int> &
 	}
 
 	return count;
+}
+
+// return true value found in vector
+bool InterpolationSearchValue(const std::vector<int> &row, int x) {
+	int lo = 0, hi = (int)row.size()-1;
+
+	// Since vector is sorted, an element present
+	// in array must be in range defined by corner
+	while (lo <= hi && x >= row[lo] && x <= row[hi])
+	{
+		// Probing the position with keeping
+		// uniform distribution in mind.
+		int pos = lo + (int)(((double)(hi - lo) /
+			(row[hi] - row[lo]))*(x - row[lo]));
+
+		// Condition of target found
+		if (row[pos] == x)
+			return true;
+
+		// If x is larger, x is in upper part
+		if (row[pos] < x)
+			lo = pos + 1;
+
+		// If x is smaller, x is in the lower part
+		else
+			hi = pos - 1;
+	}
+	return false;
 }

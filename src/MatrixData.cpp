@@ -5,6 +5,19 @@
 #include "MatrixGenerator.h"
 #include <algorithm>
 
+void MatrixData::GetSearchInfo(const std::string &searchLine, std::string &searchType, std::vector<int> &sequence) {
+
+	// extract sequence from input string
+	extractStringValues<int>(searchLine, sequence);
+	// extract search type from input i.e. first string token
+	std::vector<std::string> seqStrings{};
+	extractStringValues<std::string>(searchLine, seqStrings);
+	searchType = seqStrings[0];
+
+	return;
+
+}
+
 void MatrixData::IntializeMatrix(const std::vector<std::string> &vecRows) {
 
 	try {
@@ -13,14 +26,15 @@ void MatrixData::IntializeMatrix(const std::vector<std::string> &vecRows) {
 			throw std::runtime_error("Row has no elements");
 		}
 
-		int iRow = (m_row != vecRows.size()) ? vecRows.size() : m_row;
+		int iRow = (m_row != (int)vecRows.size()) ? vecRows.size() : m_row;
 
 		for (auto row : vecRows)
 		{
 			// extract integers from row string
-			std::vector<int> vecRow = extractStringValues<int>(row);
+			std::vector<int> vecRow{};
+			extractStringValues<int>(row, vecRow);
 
-			int iCol = (m_column != vecRow.size()) ? vecRow.size() : m_column;
+			int iCol = (m_column != (int)vecRow.size()) ? vecRow.size() : m_column;
 
 			// restrict number of columns in row
 			std::vector<int> subRow(vecRow.begin(), vecRow.begin() + iCol);
@@ -33,7 +47,7 @@ void MatrixData::IntializeMatrix(const std::vector<std::string> &vecRows) {
 			m_SortedMatrix.push_back(subRow);
 
 			// restrict number of rows in matrix
-			if (m_Matrix.size() == iRow)
+			if (iRow == (int)m_Matrix.size())
 				break;
 		}
 	}
@@ -81,36 +95,14 @@ void MatrixData::PrintMatrixData() {
     }
 }
 
-std::vector<int> MatrixData::SearchSequence(std::string searchLine) {
-	std::vector<int> vecIndex{};
-    try {
+void MatrixData::SearchSequence(const std::string &searchType, const std::vector<int> &sequence, std::vector<int> &vecIndex) {
 
-        // extract sequence from input string
-        std::vector<int> seqInts = extractStringValues<int>(searchLine);
-        // extract search type from input i.e. first string token
-		std::vector<std::string> seqStrings = extractStringValues<std::string>(searchLine);
-		std::string searcType = seqStrings[0];
+    try {
 		
-        MatrixSearch *pSearch = GetMatrixSearch(searcType);
+        MatrixSearch *pSearch = GetMatrixSearch(searchType);
 
         if (pSearch) {
-            if (searcType == "searchUnordered") {
-				vecIndex = pSearch->SearchSequence(m_SortedMatrix, seqInts);
-            }
-            else {
-				vecIndex = pSearch->SearchSequence(m_Matrix, seqInts);
-            }
-						
-			// output the row indices
-			if(vecIndex.size() == 0){
-				std::cout << "none";
-			}
-			else {
-				for (auto index : vecIndex) {
-					std::cout << index << " ";
-				}
-			}
-			std::cout << std::endl;
+			pSearch->SearchSequence(m_Matrix, m_SortedMatrix, sequence, vecIndex);
         }
         else {
             std::cout << "Error: Search type is not valid" << std::endl;
@@ -121,10 +113,10 @@ std::vector<int> MatrixData::SearchSequence(std::string searchLine) {
         std::cout << "Error: Sequence search failed" << std::endl;
     }
 
-	return vecIndex;
+	return;
 }
 
-MatrixSearch* MatrixData::GetMatrixSearch(std::string searchType) {
+MatrixSearch* MatrixData::GetMatrixSearch(const std::string &searchType) {
 
     MatrixSearch *pSearch = nullptr;
 

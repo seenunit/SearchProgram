@@ -117,7 +117,8 @@ int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &
         if (key == m_key) {
 
             std::string sequnence(line.begin() + m_key.length(), line.end());
-            std::vector<int> vecRW = extractStringValues<int>(sequnence);
+			std::vector<int> vecRW{};
+			extractStringValues<int>(sequnence, vecRW);
 
             row = vecRW[0];
             column = vecRW[1];
@@ -134,7 +135,8 @@ int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &
             
             if (key == m_key) {
                 std::string sequnence(line.begin() + m_key.length(), line.end());
-				std::vector<int> vecIntegers = extractStringValues<int>(sequnence);
+				std::vector<int> vecIntegers{};
+				extractStringValues<int>(sequnence, vecIntegers);
 				outMatrix.push_back(vecIntegers);
             }
             else {
