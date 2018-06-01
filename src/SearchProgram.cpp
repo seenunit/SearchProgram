@@ -96,15 +96,18 @@ int main(int argc, char **argv) {
             MatrixData matrix(row, column);
             matrix.IntializeMatrix(vecRowLines);
 
-			if (argc == 4) {
-				std::string timearg = argv[3];
+			if (argc > 2) {
+
+				std::string timearg = argv[2];
 
 				if (timearg == "-testtime") {
 					TestRandomMatrixSearch(matrix);
-				}
-			}
 
-			if (argc > 2) {
+					std::cout << "Press any key to exit";
+					std::cin.get();
+
+					return 0;
+				}
 
 				std::string strSearchFile = argv[2];
 

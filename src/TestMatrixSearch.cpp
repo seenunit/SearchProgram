@@ -1,9 +1,21 @@
 #include "MatrixData.h"
+#include <ctime>
+#include <sstream>
+
+#include <fstream>
 
 struct TestData {
 	std::string input;
 	std::vector<int> baseOutput;
 };
+
+struct SearchDataTime{
+	std::string searchtype;
+	std::vector<int> sequence;
+	std::vector<int> vecIndex;
+	float elapsedtime;
+};
+
 
 
 void TestMatrixSearch() {
@@ -83,61 +95,73 @@ void TestMatrixSearch() {
 }
 
 void TestRandomMatrixSearch(MatrixData &matrix) {
+		
+	clock_t begin_time = 0;
+	std::ofstream timefile("time.txt");
 
-	//std::ofstream timefile;
-	//clock_t begin_time = clock();
+	std::cout << "Random test is started" << std::endl;
 
+	std::vector<SearchDataTime> tests{};
 
+	// Use current time as seed for random generator
+	srand((unsigned int)time(nullptr));
+	for (int i = 0, k=0; i < 1000; i++, k++)
+	{
+		SearchDataTime testdata;
 
-	//std::vector<std::string> tests{};
+		for (int j = 0; j < 20; j++)
+		{
+			// Storing the string into string stream
+			testdata.sequence.push_back(rand());
+		}
 
-	//// Use current time as seed for random generator
-	//srand((unsigned int)time(nullptr));
-	//for (int i = 0; i < 1000; i++)
-	//{
-	//	std::stringstream ss;
+		if (k == 0) {
+			testdata.searchtype = "searchSequence";
+		}
+		else if (k == 1) {
+			testdata.searchtype = "searchUnordered";
+		}
+		else if (k == 2) {
+			testdata.searchtype = "searchBestMatch";
+			k = 0;
+		}		
+		tests.push_back(testdata);
+	}
+	
 
-	//	for (int j = 0; j < 20; j++)
-	//	{
-	//		// Storing the string into string stream
-	//		ss << rand() << " ";
-	//	}
+	// supress cout statements
+	std::cout.setstate(std::ios_base::failbit);
 
-	//}
-	//
+	std::vector<std::vector<int>> testsOutput;
 
-	//// supress cout statements
-	//std::cout.setstate(std::ios_base::failbit);
+	// run through search functions using test data
+	for (size_t i = 0; i < tests.size(); i++)
+	{	
+		auto test = tests[i];
+		std::vector<int> vecIndex{};
+		begin_time = clock();
+		matrix.SearchSequence(test.searchtype, test.sequence, vecIndex);
+		float elapsedtime = float(clock() - begin_time) / CLOCKS_PER_SEC;
+		tests[i].elapsedtime = elapsedtime;
+		tests[i].vecIndex = vecIndex;
+	}
 
-	//std::vector<std::vector<int>> testsOutput;
+	// Revert back to original cout state
+	std::cout.clear();
 
-	//// run through search functions using test data
-	//for (auto test : tests) {
-	//	std::string searchType;
-	//	std::vector<int> sequence;
+	std::stringstream ss;
+	// Compare base output and test oupt
+	for (size_t i = 0; i < tests.size() && i < tests.size(); i++) {
+		
+		ss << tests[i].searchtype << " elapsed time: " << tests[i].elapsedtime << " row values: ";
+		for (auto index : tests[i].vecIndex) {
+			ss << index << " ";
+		}
+		ss << std::endl;
 
-	//	matrix.GetSearchInfo(test, searchType, sequence);
+		std::cout << ss.str();
+		timefile << ss.str();
 
-	//	std::vector<int> vecIndex{};
-	//	matrix.SearchSequence(searchType, sequence, vecIndex);
-	//	testsOutput.push_back(vecIndex);
-	//}
-
-	//// Revert back to original cout state
-	//std::cout.clear();
-
-
-	//// Compare base output and test oupt
-	//for (size_t i = 0; i < testsOutput.size() && i < tests.size(); i++) {
-	//	auto output = testsOutput[i];
-	//	auto baseOutPut = tests[i].baseOutput;
-
-	//	if (output == baseOutPut) {
-	//		std::cout << tests[i].input << ": " << "passed" << std::endl;
-	//	}
-	//	else {
-	//		std::cout << tests[i].input << ": " << "failed" << std::endl;
-	//	}
-	//}
-
+		ss.clear();
+	}
 }
