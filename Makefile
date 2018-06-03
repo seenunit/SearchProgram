@@ -1,6 +1,6 @@
 CC=g++
 
-CFLAGS=-std=c++11 -Wall -O3
+CFLAGS=-std=c++11 -Wall -O3 -m64
 
 SRCDIR   = src
 MATGENDIR = matgensrc
@@ -12,7 +12,7 @@ MATGENSRC = matgensrc/main.cpp src/MatrixGenerator.cpp src/MatrixGenerator.h
 
 #$(CC) BestMatchSearch.cpp OrderedSearch.cpp SearchProgram.cpp UnOrderedSearch.cpp MatrixData.cpp  BestMatchSearch.h OrderedSearch.h MatrixData.h  MatrixSearch.h UnOrderedSearch.h -o SearchProgram
 
-all: SearchProgram
+all: SearchProgram MatrixGenerator
 	
 SearchProgram:	
 	$(CC) $(CFLAGS) $(SOURCES) $(INCLUDES) -o SearchProgram

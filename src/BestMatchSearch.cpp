@@ -1,8 +1,6 @@
 #include "BestMatchSearch.h"
 #include <algorithm>
 
-
-
 BestMatchSearch::BestMatchSearch()
 {
 }
@@ -19,7 +17,8 @@ void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 		if (sequence.size() > matrix[0].size())
 			throw std::runtime_error("Sequence size is more than matrix row size");
 
-		std::vector<int> vecMatchCount;
+		int max = 0;
+		int maxindex = -1;
 
 		std::vector<int> vecPrefix = GetSequenePrefixVector(sequence);
 
@@ -30,7 +29,7 @@ void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 
 			//if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
 			if(InterpolationSearchValue(sortrow, sequence[0]) == false) {
-				vecMatchCount.push_back(0);
+				
 				continue;
 			}
 
@@ -44,19 +43,15 @@ void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 			//int count = LinearSearchSequenceCount(row, vecSequnce, true);
 			int count = KMPSearchSequenceCount(subrow, sequence, vecPrefix, true);
 
-			// push match count to vector
-			vecMatchCount.push_back(count);
+			if (count > max) {
+				max = count;
+				maxindex = i + 1;
+			}
 		}
 
-		// get iterator of max match count in vector
-		auto result = max_element(vecMatchCount.begin(), vecMatchCount.end());
-				
-		// check the max element value greater than 0
-		if (*result > 0) {
-
-			int rowIndex = distance(vecMatchCount.begin(), result) + 1;
-
-			vecIndex.push_back(rowIndex);
+		// add row index to vector if ret is sucessful
+		if (maxindex > 0) {
+			vecIndex.push_back(maxindex);
 		}
 	}
 	catch (std::exception ex) {
@@ -64,4 +59,52 @@ void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 	}
 
     return;
+}
+
+void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const int* sequence, int size, std::vector<int> &vecIndex) {
+	try {
+		if (size > matrixarray.column)
+			throw std::runtime_error("Sequence size is more than matrix row size");
+
+		int max = 0;
+		int maxindex = -1;
+
+		int *pPrefixArray = new int[size];
+
+		GetSequencePrefixArray(sequence, size, pPrefixArray);
+
+		// iterate thorugh each row
+		for (int i = 0; i < matrixarray.row; i++) {
+
+			auto sortrow = matrixarray.m_pSortMatrix[i];
+
+			int index = InterpolationSearchValue(sortrow, matrixarray.column, sequence[0]);
+			if (index == -1)
+				continue;
+
+			auto row = matrixarray.m_pMatrix[i];
+
+			// find sequence match count on row
+			// check for single sequence match 
+			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
+			int count = KMPSearchSequenceCount(row, matrixarray.column, sequence, size, pPrefixArray, true);
+
+			if (count > max) {
+				max = count;
+				maxindex = i + 1;
+			}
+		}
+
+		// add row index to vector if ret is sucessful
+		if (maxindex > -1) {
+			vecIndex.push_back(maxindex);
+		}
+
+		if (pPrefixArray) delete[] pPrefixArray;
+	}
+	catch (std::exception ex) {
+		std::cout << "Error: Best match of sequence failed due to: " << ex.what() << std::endl;
+	}
+
+	return;
 }

@@ -70,9 +70,19 @@ void TestMatrixSearch() {
 
 		matrix.GetSearchInfo(test.input, searchType, sequence);
 
+		int size = (int)sequence.size();
+
+		int *pSequence = new int[size];
+		for (int i = 0; i < size; i++)
+		{
+			pSequence[i] = sequence[i];
+		}
+
 		std::vector<int> vecIndex{};
-		matrix.SearchSequence(searchType, sequence, vecIndex);
+		matrix.SearchSequence(searchType, pSequence, size, vecIndex);
 		testsOutput.push_back(vecIndex);
+
+		if (pSequence) delete[] pSequence;
 	}
 	
 	// Revert back to original cout state
@@ -103,9 +113,10 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 
 	std::vector<SearchDataTime> tests{};
 
+	int  k = 0;
 	// Use current time as seed for random generator
 	srand((unsigned int)time(nullptr));
-	for (int i = 0, k=0; i < 1000; i++, k++)
+	for (int i = 0; i < 1000; i++)
 	{
 		SearchDataTime testdata;
 
@@ -117,9 +128,11 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 
 		if (k == 0) {
 			testdata.searchtype = "searchSequence";
+			k++;
 		}
 		else if (k == 1) {
 			testdata.searchtype = "searchUnordered";
+			k++;
 		}
 		else if (k == 2) {
 			testdata.searchtype = "searchBestMatch";
@@ -138,20 +151,38 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 	for (size_t i = 0; i < tests.size(); i++)
 	{	
 		auto test = tests[i];
+
+		int size = (int)test.sequence.size();
+
+		int *pSequence = new int[size];
+		for (int i = 0; i < size; i++)
+		{
+			pSequence[i] = test.sequence[i];
+		}
+
 		std::vector<int> vecIndex{};
 		begin_time = clock();
-		matrix.SearchSequence(test.searchtype, test.sequence, vecIndex);
+		matrix.SearchSequence(test.searchtype, pSequence, size, vecIndex);
 		float elapsedtime = float(clock() - begin_time) / CLOCKS_PER_SEC;
 		tests[i].elapsedtime = elapsedtime;
 		tests[i].vecIndex = vecIndex;
+
+		if (pSequence) delete[] pSequence;
 	}
 
 	// Revert back to original cout state
 	std::cout.clear();
 
+	double totaltime = 0;
+
 	std::stringstream ss;
+
+	ss << std::fixed;
+	ss << std::setprecision(9);
 	// Compare base output and test oupt
 	for (size_t i = 0; i < tests.size() && i < tests.size(); i++) {
+
+		totaltime += tests[i].elapsedtime;
 		
 		ss << tests[i].searchtype << " elapsed time: " << tests[i].elapsedtime << " row values: ";
 		for (auto index : tests[i].vecIndex) {
@@ -164,4 +195,9 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 
 		ss.clear();
 	}
+
+	double averagetime = totaltime / tests.size();
+
+	std::cout << "Average time taken: " << averagetime << std::endl;
+	timefile << "Average time taken: " << averagetime << std::endl;
 }

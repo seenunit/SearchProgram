@@ -5,6 +5,11 @@
 #include "MatrixGenerator.h"
 #include <algorithm>
 
+int compare(const void * a, const void * b)
+{
+return (*(int*)a - *(int*)b);
+}
+
 void MatrixData::GetSearchInfo(const std::string &searchLine, std::string &searchType, std::vector<int> &sequence) {
 
 	// extract sequence from input string
@@ -50,6 +55,18 @@ void MatrixData::IntializeMatrix(const std::vector<std::string> &vecRows) {
 			if (iRow == (int)m_Matrix.size())
 				break;
 		}
+
+		for (int i = 0; i < m_row; i++)
+		{
+			auto row = m_Matrix[i];
+			auto sortrow = m_SortedMatrix[i];
+
+			for (int j = 0; j < m_column; j++)
+			{
+				m_MatrixArray.m_pMatrix[i][j] = row[j];
+				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
+			}
+		}
 	}
 	catch (std::exception ex) {
 		std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
@@ -73,11 +90,50 @@ void MatrixData::IntializeMatrix(const MatrixDataType &vecRows) {
             sort(row.begin(), row.end());
             m_SortedMatrix.push_back(row);
         }
+
+		for (int i = 0; i < m_row; i++)
+		{
+			auto row = m_Matrix[i];
+			auto sortrow = m_SortedMatrix[i];
+
+			for (int j = 0; j < m_column; j++)
+			{
+				m_MatrixArray.m_pMatrix[i][j] = row[j];
+				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
+			}
+		}
+
     }
     catch (std::exception ex) {
         std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
     }
+}
 
+void MatrixData::IntializeMatrixArray(int **pMatrix) {
+
+	try {
+		for (int i = 0; i < m_row; i++)
+		{
+			int *sortrow = new int[m_column];
+			for (int j = 0; j < m_column; j++)
+			{
+				sortrow[j] = pMatrix[i][j];
+			}
+
+			qsort(sortrow, m_column, sizeof(int), compare);
+
+			for (int j = 0; j < m_column; j++)
+			{
+				m_MatrixArray.m_pMatrix[i][j] = pMatrix[i][j];
+				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
+			}
+
+			if (sortrow) delete[] sortrow;
+		}
+	}
+	catch (std::exception ex) {
+		std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
+	}
 }
 
 void MatrixData::PrintMatrixData() {
@@ -101,9 +157,26 @@ void MatrixData::SearchSequence(const std::string &searchType, const std::vector
 		
         MatrixSearch *pSearch = GetMatrixSearch(searchType);
 
-        if (pSearch) {
-			pSearch->SearchSequence(m_Matrix, m_SortedMatrix, sequence, vecIndex);
-        }
+		if (pSearch) {
+
+			if (searchType == "searchSequence") {
+
+				int size = (int)sequence.size();
+				
+				int *pSequence = new int[size];
+				for (int i = 0; i < size; i++)
+				{
+					pSequence[i] = sequence[i];
+				}
+
+				pSearch->SearchSequence(m_MatrixArray, pSequence, size, vecIndex);
+
+				delete[] pSequence;
+			}
+			else {
+				pSearch->SearchSequence(m_Matrix, m_SortedMatrix, sequence, vecIndex);
+			}
+		}
         else {
             std::cout << "Error: Search type is not valid" << std::endl;
         }
@@ -112,6 +185,31 @@ void MatrixData::SearchSequence(const std::string &searchType, const std::vector
     catch (...) {
         std::cout << "Error: Sequence search failed" << std::endl;
     }
+
+	return;
+}
+
+void MatrixData::SearchSequence(const std::string &searchType, const int sequence[], int size, std::vector<int> &vecIndex) {
+	try {
+
+		MatrixSearch *pSearch = GetMatrixSearch(searchType);
+
+		if (pSearch) {
+
+
+				pSearch->SearchSequence(m_MatrixArray, sequence, size, vecIndex);
+
+
+
+		}
+		else {
+			std::cout << "Error: Search type is not valid" << std::endl;
+		}
+
+	}
+	catch (...) {
+		std::cout << "Error: Sequence search failed" << std::endl;
+	}
 
 	return;
 }

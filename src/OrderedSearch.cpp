@@ -65,6 +65,47 @@ void OrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDat
     return;
 }
 
+void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int* sequence, int size, std::vector<int> &vecIndex) {
+
+	try {
+		if(size > matrixarray.column)
+			throw std::runtime_error("Sequence size is more than matrix row size");
+
+		int *pPrefixArray = new int[size];
+		
+		GetSequencePrefixArray(sequence, size, pPrefixArray);
+
+		// iterate thorugh each row
+		for (int i = 0; i < matrixarray.row; i++) {
+
+			auto sortrow = matrixarray.m_pSortMatrix[i];
+
+			int index = InterpolationSearchValue(sortrow, matrixarray.column, sequence[0]);
+			if (index == -1)
+				continue;
+
+			auto row = matrixarray.m_pMatrix[i];
+			
+			// find sequence match count on row
+			// check for single sequence match 
+			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
+			int count = KMPSearchSequenceCount(row, matrixarray.column, sequence, size, pPrefixArray, false);
+
+			// add row index to vector if ret is sucessful
+			if (count > 0) {
+				vecIndex.push_back(i + 1);
+			}
+		}
+
+		if (pPrefixArray) delete[] pPrefixArray;
+	}
+	catch (std::exception ex) {
+		std::cout << "Error: Ordered match of sequence failed due to: " << ex.what() << std::endl;
+	}
+
+	return;
+}
+
 /*
 Algorithm:
 1. Iterate through input row
@@ -144,12 +185,43 @@ std::vector<int> GetSequenePrefixVector(const std::vector<int> &vecSequence) {
 	return vecLongestPrefix;
 }
 
+void GetSequencePrefixArray(const int *pSequence, int size, int *pPrefixArray) {
+	
+	// count of previous value
+	int count = 0;
+
+	// first one is always 0
+	pPrefixArray[0] = 0;
+
+	int i = 1;
+	while (i < size) {
+
+		if (pSequence[i] == pSequence[count]) {
+			count++;
+			pPrefixArray[i] = count;
+			i++;
+		}
+		else {
+			if (count != 0) {
+				count = pPrefixArray[count - 1];
+			}
+			else
+			{
+				pPrefixArray[i] = 0;
+				i++;
+			}
+		}
+	}
+
+	return;
+}
+
 /*
 Algorithm:
 
 */
 int KMPSearchSequenceCount(const std::vector<int> &row, const std::vector<int> &sequence, const std::vector<int> &vecSeqPrefix, bool bCount) {
-
+;
 	int count = 0;
 
 	int M = sequence.size();
@@ -190,6 +262,45 @@ int KMPSearchSequenceCount(const std::vector<int> &row, const std::vector<int> &
 	return count;
 }
 
+int KMPSearchSequenceCount(const int row[], int N, const int sequence[], int M, const int seqprefix[], bool bCount) {
+
+	int count = 0;
+
+	int i = 0;  // index for row[]
+	int j = 0;  // index for sequence[]
+	while (i < N)
+	{
+		if (sequence[j] == row[i])
+		{
+			j++;
+			i++;
+		}
+
+		if (j == M)
+		{
+			// Found sequence match
+			count++;
+
+			// break the loop for first sequence match
+			if (bCount == false)
+				break;
+
+			j = seqprefix[j - 1];
+		}
+		else if (i < N && sequence[j] != row[i])// mismatch after j matches
+		{
+			// Do not match vecSeqPrefix[0..vecSeqPrefix[j-1]] integers,
+			// they will match anyway
+			if (j != 0)
+				j = seqprefix[j - 1];
+			else
+				i = i + 1;
+		}
+	}
+
+	return count;
+}
+
 // return true value found in vector
 bool InterpolationSearchValue(const std::vector<int> &row, int x) {
 	int lo = 0, hi = (int)row.size()-1;
@@ -216,4 +327,32 @@ bool InterpolationSearchValue(const std::vector<int> &row, int x) {
 			hi = pos - 1;
 	}
 	return false;
+}
+
+int InterpolationSearchValue(const int row[], int size, int x) {
+
+	int lo = 0, hi = size - 1;
+
+	// Since vector is sorted, an element present
+	// in array must be in range defined by corner
+	while (lo <= hi && x >= row[lo] && x <= row[hi])
+	{
+		// Probing the position with keeping
+		// uniform distribution in mind.
+		int pos = lo + (int)(((double)(hi - lo) /
+			(row[hi] - row[lo]))*(x - row[lo]));
+
+		// Condition of target found
+		if (row[pos] == x)
+			return pos;
+
+		// If x is larger, x is in upper part
+		if (row[pos] < x)
+			lo = pos + 1;
+
+		// If x is smaller, x is in the lower part
+		else
+			hi = pos - 1;
+	}
+	return -1;
 }

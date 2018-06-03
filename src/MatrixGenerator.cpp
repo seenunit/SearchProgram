@@ -50,50 +50,42 @@ int MatrixGenerator::GenerateMatrixFile(const std::string &filename, int row, in
 }
 
 int MatrixGenerator::GenerateRandomMatrixFile(const std::string &filename, int row, int column, bool bText) {
+	
+	std::ofstream outtextfile;
+	if (bText == true) {
+		outtextfile.open("matrix.txt");
+	}
 
-	std::vector<std::string>  vecString;
+	std::ofstream outfile(filename);
 
 	std::string strRW = std::to_string(row) + " " + std::to_string(column);
-	vecString.push_back(strRW);
+	if (outtextfile.is_open()) outtextfile << strRW << '\n';
+	if (outfile.is_open()) {
+		std::string nline = m_key + strRW;
+		outfile << negateLine(nline) << '\n';
+	}
 
 	// Use current time as seed for random generator
 	srand((unsigned int)time(nullptr));
 	for (int i = 0; i < row; i++)
 	{
-		std::stringstream ss;
+		std::string line{};
 
 		for (int  j = 0; j < column; j++)
 		{
 			// Storing the string into string stream
-			ss << rand() << " ";
+			line +=  std::to_string(rand()) + " ";
 		}
 
-		vecString.push_back(ss.str());
-	}
-
-	if (bText == true) {
-
-		std::ofstream outfile("matrix.txt");
-
+		if (outtextfile.is_open()) outtextfile << line << '\n';
+		
 		if (outfile.is_open()) {
-			for (auto line : vecString) outfile << line << '\n';
+			std::string nline = m_key + line;
+			outfile << negateLine(nline) << '\n';
 		}
-	}
-
-	// write the file with the modified contents
-	{
-		std::ofstream outfile(filename);
-
-		if (outfile.is_open()) {
-			for (auto line : vecString) {
-				std::string nline = m_key + line;
-				outfile << negateLine(nline) << '\n';
-			}
-		}
-		else
-		{
+		else {
 			return 0;
-		}		
+		}
 	}
 
 	return 1;
@@ -149,6 +141,67 @@ int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &
     }
 
     return 1;
+}
+
+int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &column, int **& outMatrix) {
+
+	std::ifstream infile(filename);
+
+	if (infile.is_open()) {
+
+		std::string strLine;
+
+		// get row and column from file
+		getline(infile, strLine);
+
+		std::string line(negateLine(strLine));
+
+		std::string key(line.begin(), line.begin() + m_key.length());
+
+		if (key == m_key) {
+
+			std::string sequnence(line.begin() + m_key.length(), line.end());
+			std::vector<int> vecRW{};
+			extractStringValues<int>(sequnence, vecRW);
+
+			row = vecRW[0];
+			column = vecRW[1];
+		}
+		else {
+			return 0;
+		}
+
+		outMatrix = new int*[row];
+
+		for (int i = 0; i < row && getline(infile, strLine); i++) {
+
+			std::string line(negateLine(strLine));
+
+			std::string key(line.begin(), line.begin() + m_key.length());
+
+			if (key == m_key) {
+				std::string sequnence(line.begin() + m_key.length(), line.end());
+				std::vector<int> vecIntegers{};
+				extractStringValues<int>(sequnence, vecIntegers);
+
+				outMatrix[i] = new int[column] {0};
+
+				for (int j = 0; j < column && j < (int)vecIntegers.size(); j++)
+				{
+					outMatrix[i][j] = vecIntegers[j];
+				}
+			}
+			else {
+				return 0;
+			}
+		}
+	}
+	else {
+		return 0;
+	}
+
+	return 1;
+
 }
 
 

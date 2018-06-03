@@ -20,6 +20,8 @@ public:
 
     int ReadMatrixFile(const std::string &filename, int &row, int &column, std::vector<std::vector<int>> &outMatrix);
 
+	int ReadMatrixFile(const std::string &filename, int &row, int &column, int ** &outMatrix);
+
     int ReadSearchFile(const std::string &filename, std::vector<std::string> &outStrings);
 
 private:

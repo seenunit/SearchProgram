@@ -1,8 +1,6 @@
 #include "MatrixData.h"
 #include "OrderedSearch.h"
 #include "MatrixGenerator.h"
-#include <fstream>
-#include <ctime>
 
 std::vector<std::string> FileRead(std::string strFileName) {    
 
@@ -18,32 +16,6 @@ std::vector<std::string> FileRead(std::string strFileName) {
     }
         
     return vecString;
-}
-
-inline void beginetime(clock_t &time) {
-	if (time != 0)
-		time = clock();
-}
-
-inline void elapsedtimeFile(std::ofstream &timefile, clock_t begin_time) {
-	if (begin_time != 0) {
-		float elapsedtime = float(clock() - begin_time) / CLOCKS_PER_SEC;
-		std::cout << "elapsed time: " << elapsedtime << std::endl;
-		timefile << elapsedtime << '\n';
-	}
-}
-
-inline void printIndices(std::vector<int> vecIndex) {
-	// output the row indices
-	if (vecIndex.size() == 0) {
-		std::cout << "none";
-	}
-	else {
-		for (auto index : vecIndex) {
-			std::cout << index << " ";
-		}
-	}
-	std::cout << std::endl;
 }
 
 int main(int argc, char **argv) {
@@ -87,14 +59,29 @@ int main(int argc, char **argv) {
         // Validate and read the matrix file
         //vecRowLines = FileRead(strDataFile);
 		std::cout << "Reading the matrix file" << std::endl;
-        int ret = matGen.ReadMatrixFile(strDataFile, row, column, vecRowLines);
+        //int ret = matGen.ReadMatrixFile(strDataFile, row, column, vecRowLines);
+		int **ppMatrix = nullptr;
+		int ret = matGen.ReadMatrixFile(strDataFile, row, column, ppMatrix);
 
         if (ret == 1) {
             
 			std::cout << "intializing the matrix" << std::endl;
             // Create and intialize matrix
             MatrixData matrix(row, column);
-            matrix.IntializeMatrix(vecRowLines);
+			//matrix.IntializeMatrix(vecRowLines);
+			//matrix.IntializeMatrixArray();
+			matrix.IntializeMatrixArray(ppMatrix);
+
+			// delete the local matrix data
+			if (ppMatrix) {
+				for (int i = 0; i < row; i++)
+				{
+					delete[] ppMatrix[i];
+				}
+				delete[] ppMatrix;
+
+				ppMatrix = nullptr;
+			}
 
 			if (argc > 2) {
 
@@ -126,11 +113,21 @@ int main(int argc, char **argv) {
 
 						matrix.GetSearchInfo(strSearch, searchType, sequence);
 
+						int size = (int)sequence.size();
+
+						int *pSequence = new int[size];
+						for (int i = 0; i < size; i++)
+						{
+							pSequence[i] = sequence[i];
+						}
+
 						std::vector<int> vecIndex{};
 
 						beginetime(begin_time);
-						matrix.SearchSequence(searchType, sequence, vecIndex);
+						matrix.SearchSequence(searchType, pSequence, size, vecIndex);
 						elapsedtimeFile(timefile, begin_time);
+
+						if (pSequence) delete[] pSequence;
 
 						printIndices(vecIndex);
 					}
@@ -162,11 +159,21 @@ int main(int argc, char **argv) {
 
 					matrix.GetSearchInfo(line, searchType, sequence);
 
+					int size = (int)sequence.size();
+
+					int *pSequence = new int[size];
+					for (int i = 0; i < size; i++)
+					{
+						pSequence[i] = sequence[i];
+					}
+
 					std::vector<int> vecIndex{};
 
 					beginetime(begin_time);
-					matrix.SearchSequence(searchType, sequence, vecIndex);
+					matrix.SearchSequence(searchType, pSequence, size, vecIndex);
 					elapsedtimeFile(timefile, begin_time);
+
+					if(pSequence) delete[] pSequence;
 
 					printIndices(vecIndex);
 				}
@@ -175,6 +182,15 @@ int main(int argc, char **argv) {
         else {
             std::cout << "Error: failed to read matrix file" << std::endl;
         }
+		if (ppMatrix) {
+			for (int i = 0; i < row; i++)
+			{
+				delete[] ppMatrix[i];
+			}
+			delete[] ppMatrix;
+
+			ppMatrix = nullptr;
+		}
     }
     else {
         std::cout << "Error: Not a valid arguments" << std::endl;
