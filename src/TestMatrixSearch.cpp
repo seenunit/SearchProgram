@@ -13,7 +13,7 @@ struct SearchDataTime{
 	std::string searchtype;
 	std::vector<int> sequence;
 	std::vector<int> vecIndex;
-	float elapsedtime;
+	double elapsedtime;
 };
 
 
@@ -140,7 +140,13 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 		}		
 		tests.push_back(testdata);
 	}
-	
+
+	double totaltime = 0;
+
+	std::stringstream ss;
+
+	ss << std::fixed;
+	ss << std::setprecision(9);
 
 	// supress cout statements
 	std::cout.setstate(std::ios_base::failbit);
@@ -163,27 +169,14 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 		std::vector<int> vecIndex{};
 		begin_time = clock();
 		matrix.SearchSequence(test.searchtype, pSequence, size, vecIndex);
-		float elapsedtime = float(clock() - begin_time) / CLOCKS_PER_SEC;
+		double elapsedtime = (double(clock() - begin_time) / CLOCKS_PER_SEC) * 1000000;
 		tests[i].elapsedtime = elapsedtime;
 		tests[i].vecIndex = vecIndex;
 
 		if (pSequence) delete[] pSequence;
-	}
 
-	// Revert back to original cout state
-	std::cout.clear();
+		totaltime += elapsedtime;
 
-	double totaltime = 0;
-
-	std::stringstream ss;
-
-	ss << std::fixed;
-	ss << std::setprecision(9);
-	// Compare base output and test oupt
-	for (size_t i = 0; i < tests.size() && i < tests.size(); i++) {
-
-		totaltime += tests[i].elapsedtime;
-		
 		ss << tests[i].searchtype << " elapsed time: " << tests[i].elapsedtime << " row values: ";
 		for (auto index : tests[i].vecIndex) {
 			ss << index << " ";
@@ -196,8 +189,15 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 		ss.clear();
 	}
 
+	// Revert back to original cout state
+	std::cout.clear();
+
 	double averagetime = totaltime / tests.size();
 
-	std::cout << "Average time taken: " << averagetime << std::endl;
-	timefile << "Average time taken: " << averagetime << std::endl;
+	std::cout << "Average time taken: " << averagetime << " microseconds" << std::endl;
+	timefile << "Average time taken: " << averagetime << " microseconds" << std::endl;
+
+	std::cout << "File time.txt is generated with elapsed time(in microseconds)" << std::endl;
+
+	return;
 }

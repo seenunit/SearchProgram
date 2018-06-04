@@ -68,7 +68,7 @@ void TestRandomMatrixSearch(MatrixData &matrix);
 inline void beginetime(clock_t &time) {
 	if (time != 0)
 	{
-		std::cout << std::scientific;
+		std::cout << std::fixed;
 		std::cout << std::setprecision(9);
 		time = clock();
 	}
@@ -77,8 +77,8 @@ inline void beginetime(clock_t &time) {
 inline void elapsedtimeFile(std::ofstream &timefile, clock_t begin_time) {
 	if (begin_time != 0) {
 
-		double elapsedtime = double(clock() - begin_time) / CLOCKS_PER_SEC;
-		std::cout << "elapsed time: " << elapsedtime << std::endl;
+		double elapsedtime = (double(clock() - begin_time) / CLOCKS_PER_SEC) * 1000000;
+		std::cout << "elapsed time: " << elapsedtime << " microseconds" << std::endl;
 
 		if (timefile.is_open() == true)
 			timefile << elapsedtime << '\n';
