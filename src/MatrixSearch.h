@@ -45,6 +45,8 @@ int UnorderedSearchSortedSequence(const std::vector<int> &row, const std::vector
 
 int UnorderedSearchSortedSequence(const int row[], int N, const int sequence[], int M);
 
+int binarySearch(int arr[], int size, int x);
+
 int compare(const void * a, const void * b);
 
 class MatrixSearch

@@ -78,7 +78,7 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 
 			auto sortrow = matrixarray.m_pSortMatrix[i];
 
-			int index = InterpolationSearchValue(sortrow, matrixarray.column, sequence[0]);
+			int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
 			if (index == -1)
 				continue;
 

@@ -80,7 +80,7 @@ void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int
 
 			auto sortrow = matrixarray.m_pSortMatrix[i];
 
-			int index = InterpolationSearchValue(sortrow, matrixarray.column, sequence[0]);
+			int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
 			if (index == -1)
 				continue;
 
@@ -342,6 +342,9 @@ int InterpolationSearchValue(const int row[], int size, int x) {
 		int pos = lo + (int)(((double)(hi - lo) /
 			(row[hi] - row[lo]))*(x - row[lo]));
 
+		if (pos >= size)
+			break;
+
 		// Condition of target found
 		if (row[pos] == x)
 			return pos;
@@ -354,5 +357,38 @@ int InterpolationSearchValue(const int row[], int size, int x) {
 		else
 			hi = pos - 1;
 	}
+	return -1;
+}
+
+// A iterative binary search function. It returns 
+// location of x in given array arr[l..r] is present, 
+// otherwise -1
+int binarySearch(int arr[], int size, int x)
+{
+	int l = 0;
+	int r = size - 1;
+
+	while (l <= r)
+	{
+		int m = l + (r - l) / 2;
+
+		if (m >= size)
+			break;
+
+		// Check if x is present at mid
+		if (arr[m] == x)
+			return m;
+
+		// If x greater, ignore left half
+		if (arr[m] < x)
+			l = m + 1;
+
+		// If x is smaller, ignore right half
+		else
+			r = m - 1;
+	}
+
+	// We reach here when element is not 
+	// present in array
 	return -1;
 }

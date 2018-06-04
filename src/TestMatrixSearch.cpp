@@ -145,19 +145,19 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 	// supress cout statements
 	std::cout.setstate(std::ios_base::failbit);
 
-	std::vector<std::vector<int>> testsOutput;
-
 	// run through search functions using test data
 	for (size_t i = 0; i < tests.size(); i++)
 	{	
 		auto test = tests[i];
 
+		std::cout << test.searchtype;
+
 		int size = (int)test.sequence.size();
 
 		int *pSequence = new int[size];
-		for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++)
 		{
-			pSequence[i] = test.sequence[i];
+			pSequence[j] = test.sequence[j];
 		}
 
 		std::vector<int> vecIndex{};
