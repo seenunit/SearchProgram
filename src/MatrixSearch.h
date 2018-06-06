@@ -8,9 +8,16 @@
 
 typedef std::vector<std::vector<int>> MatrixDataType;
 
+struct MatrixMap {
+	int matrixvalue;
+	int matrixrow;
+	int matrixcolumn;
+};
+
 struct MatrixDataArray {
 	int **m_pMatrix;
 	int **m_pSortMatrix;
+	MatrixMap *m_pMatrixMap;
 	int row{};
 	int column{};
 };
@@ -47,7 +54,13 @@ int UnorderedSearchSortedSequence(const int row[], int N, const int sequence[], 
 
 int binarySearch(int arr[], int size, int x);
 
+void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<MatrixMap> &outMatrixMap);
+
 int compare(const void * a, const void * b);
+
+int compareMatrixMap(const void *a, const void * b);
+
+int compareMatrixMapKey(const void *a, const void * b);
 
 class MatrixSearch
 {

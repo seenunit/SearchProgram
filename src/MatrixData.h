@@ -16,6 +16,7 @@ public:
     MatrixData(int row, int column) : m_row(row), m_column(column) {
 		m_MatrixArray.row = m_row;
 		m_MatrixArray.column = m_column;
+		m_MatrixArray.m_pMatrixMap = new MatrixMap[m_row * m_column];
 
 		m_MatrixArray.m_pMatrix = new int*[m_row];
 		m_MatrixArray.m_pSortMatrix = new  int*[m_row];
@@ -39,6 +40,12 @@ public:
 
 			m_MatrixArray.m_pMatrix = nullptr;
 			m_MatrixArray.m_pSortMatrix = nullptr;
+		}
+
+		if (m_MatrixArray.m_pMatrixMap != nullptr) {
+			delete[] m_MatrixArray.m_pMatrixMap;
+
+			m_MatrixArray.m_pMatrixMap = nullptr;
 		}
 	};
 

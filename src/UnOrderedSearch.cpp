@@ -34,8 +34,8 @@ void UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 
 			auto row = sortedMatrix[i];
 
-			//if (std::binary_search(row.begin(), row.end(), sequence[0]) == false) {
-			if (InterpolationSearchValue(row, sequence[0]) == false) {
+			if (std::binary_search(row.begin(), row.end(), sequence[0]) == false) {
+			//if (InterpolationSearchValue(row, sequence[0]) == false) {
 				continue;
 			}
 
@@ -79,9 +79,12 @@ void UnOrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 
 			auto sortrow = matrixarray.m_pSortMatrix[i];
 
-			int index = binarySearch(sortrow, matrixarray.column, sortsequence[0]);
-			if (index == -1)
+			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
 				continue;
+
+			//int index = binarySearch(sortrow, matrixarray.column, sortsequence[0]);
+			//if (index == -1)
+			//	continue;
 
 			// find sequence match count on row
 			// check for single sequence match 

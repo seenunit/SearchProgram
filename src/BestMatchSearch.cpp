@@ -27,8 +27,8 @@ void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 
 			auto sortrow = sortedMatrix[i];
 
-			//if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
-			if(InterpolationSearchValue(sortrow, sequence[0]) == false) {
+			if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
+			//if(InterpolationSearchValue(sortrow, sequence[0]) == false) {
 				
 				continue;
 			}
@@ -77,10 +77,13 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 		for (int i = 0; i < matrixarray.row; i++) {
 
 			auto sortrow = matrixarray.m_pSortMatrix[i];
-
-			int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
-			if (index == -1)
+			
+			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
 				continue;
+
+			//int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
+			//if (index == -1)
+			//	continue;
 
 			auto row = matrixarray.m_pMatrix[i];
 

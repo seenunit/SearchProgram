@@ -36,8 +36,8 @@ void OrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDat
 
 			auto sortrow = sortedMatrix[i];
 
-			//if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
-			if (InterpolationSearchValue(sortrow, sequence[0]) == false) {
+			if (std::binary_search(sortrow.begin(), sortrow.end(), sequence[0]) == false) {
+			//if (InterpolationSearchValue(sortrow, sequence[0]) == false) {
 				continue;
 			}
 
@@ -80,9 +80,12 @@ void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int
 
 			auto sortrow = matrixarray.m_pSortMatrix[i];
 
-			int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
-			if (index == -1)
+			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
 				continue;
+
+			//int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
+			//if (index == -1)
+			//	continue;
 
 			auto row = matrixarray.m_pMatrix[i];
 			
@@ -391,4 +394,41 @@ int binarySearch(int arr[], int size, int x)
 	// We reach here when element is not 
 	// present in array
 	return -1;
+}
+
+void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<MatrixMap> &outMatrixMap) {
+
+	int l = 0;
+	int r = size - 1;
+
+	int mapindex = -1;
+
+	while (l <= r)
+	{
+		int m = l + (r - l) / 2;
+
+		if (m >= size)
+			break;
+
+		// Check if x is present at mid
+		if (matrixmap[m].matrixvalue == value) {
+			mapindex = m;
+			break;
+		}
+
+		// If x greater, ignore left half
+		if (matrixmap[m].matrixvalue < value)
+			l = m + 1;
+
+		// If x is smaller, ignore right half
+		else
+			r = m - 1;
+	}
+
+	if (mapindex == -1)
+		return;
+
+	//TODO
+
+	return;
 }

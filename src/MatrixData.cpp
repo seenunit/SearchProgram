@@ -10,6 +10,31 @@ int compare(const void * a, const void * b)
 return (*(int*)a - *(int*)b);
 }
 
+int compareMatrixMap(const void *a, const void * b) {
+
+
+	struct MatrixMap *pa = (struct MatrixMap *)a;
+	struct MatrixMap *pb = (struct MatrixMap *)b;
+
+	if (pa->matrixvalue <  pb->matrixvalue) return -1;
+	if (pa->matrixvalue ==  pb->matrixvalue) return 0;
+	if (pa->matrixvalue >  pb->matrixvalue) return 1;
+
+	return -1;
+}
+
+int compareMatrixMapKey(const void *a, const void * b) {
+	
+	int *pkey = (int *)a;
+	struct MatrixMap *pElem = (struct MatrixMap *)b;
+
+	if (*pkey <  pElem->matrixvalue) return -1;
+	if (*pkey == pElem->matrixvalue) return 0;
+	if (*pkey >  pElem->matrixvalue) return 1;
+
+	return -1;
+}
+
 void MatrixData::GetSearchInfo(const std::string &searchLine, std::string &searchType, std::vector<int> &sequence) {
 
 	// extract sequence from input string
@@ -126,10 +151,18 @@ void MatrixData::IntializeMatrixArray(int **pMatrix) {
 			{
 				m_MatrixArray.m_pMatrix[i][j] = pMatrix[i][j];
 				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
+				
+				// fill matrix map
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].matrixvalue = pMatrix[i][j];
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].matrixrow = i;
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].matrixcolumn = j;
 			}
 
 			if (sortrow) delete[] sortrow;
 		}
+
+		// sort the matrix map according data values
+		qsort(m_MatrixArray.m_pMatrixMap, m_row*m_column, sizeof(MatrixMap), compareMatrixMap);
 	}
 	catch (std::exception ex) {
 		std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
