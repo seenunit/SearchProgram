@@ -1,7 +1,6 @@
 #include "MatrixData.h"
 #include <ctime>
 #include <sstream>
-
 #include <fstream>
 
 struct TestData {
@@ -114,11 +113,12 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 	std::vector<SearchDataTime> tests{};
 
 	int  k = 0;
-	// Use current time as seed for random generator
-	srand((unsigned int)time(nullptr));
-	for (int i = 0; i < 1000; i++)
+	// Use current time as seed for random generator	
+	for (int i = 0; i < 3000; i++)
 	{
 		SearchDataTime testdata;
+
+		srand(time(0));
 
 		for (int j = 0; j < 20; j++)
 		{
@@ -177,7 +177,11 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 
 		totaltime += elapsedtime;
 
-		ss << tests[i].searchtype << " elapsed time: " << tests[i].elapsedtime << " row values: ";
+		ss << tests[i].searchtype << " ";
+		for (auto value : tests[i].sequence) {
+			ss << value << " ";
+		}
+		ss << " , elapsed time: " << tests[i].elapsedtime << " us, row values: ";
 		for (auto index : tests[i].vecIndex) {
 			ss << index << " ";
 		}
