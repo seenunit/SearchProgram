@@ -16,9 +16,9 @@ int compareMatrixMap(const void *a, const void * b) {
 	struct MatrixMap *pa = (struct MatrixMap *)a;
 	struct MatrixMap *pb = (struct MatrixMap *)b;
 
-	if (pa->matrixvalue <  pb->matrixvalue) return -1;
-	if (pa->matrixvalue ==  pb->matrixvalue) return 0;
-	if (pa->matrixvalue >  pb->matrixvalue) return 1;
+	if (pa->value <  pb->value) return -1;
+	if (pa->value ==  pb->value) return 0;
+	if (pa->value >  pb->value) return 1;
 
 	return -1;
 }
@@ -28,9 +28,9 @@ int compareMatrixMapKey(const void *a, const void * b) {
 	int *pkey = (int *)a;
 	struct MatrixMap *pElem = (struct MatrixMap *)b;
 
-	if (*pkey <  pElem->matrixvalue) return -1;
-	if (*pkey == pElem->matrixvalue) return 0;
-	if (*pkey >  pElem->matrixvalue) return 1;
+	if (*pkey <  pElem->value) return -1;
+	if (*pkey == pElem->value) return 0;
+	if (*pkey >  pElem->value) return 1;
 
 	return -1;
 }
@@ -90,8 +90,16 @@ void MatrixData::IntializeMatrix(const std::vector<std::string> &vecRows) {
 			{
 				m_MatrixArray.m_pMatrix[i][j] = row[j];
 				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
+
+				// fill matrix map
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].value = row[j];
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].rowindex = i;
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].columnindex = j;
 			}
 		}
+
+		// sort the matrix map according data values
+		qsort(m_MatrixArray.m_pMatrixMap, m_row*m_column, sizeof(MatrixMap), compareMatrixMap);
 	}
 	catch (std::exception ex) {
 		std::cout << "Error: Matrix intialization is failed due to: " << ex.what() << std::endl;
@@ -125,8 +133,16 @@ void MatrixData::IntializeMatrix(const MatrixDataType &vecRows) {
 			{
 				m_MatrixArray.m_pMatrix[i][j] = row[j];
 				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
+
+				// fill matrix map
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].value = row[j];
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].rowindex = i;
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].columnindex = j;
 			}
 		}
+
+		// sort the matrix map according data values
+		qsort(m_MatrixArray.m_pMatrixMap, m_row*m_column, sizeof(MatrixMap), compareMatrixMap);
 
     }
     catch (std::exception ex) {
@@ -153,9 +169,9 @@ void MatrixData::IntializeMatrixArray(int **pMatrix) {
 				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
 				
 				// fill matrix map
-				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].matrixvalue = pMatrix[i][j];
-				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].matrixrow = i;
-				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].matrixcolumn = j;
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].value = pMatrix[i][j];
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].rowindex = i;
+				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].columnindex = j;
 			}
 
 			if (sortrow) delete[] sortrow;

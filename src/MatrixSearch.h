@@ -9,9 +9,9 @@
 typedef std::vector<std::vector<int>> MatrixDataType;
 
 struct MatrixMap {
-	int matrixvalue;
-	int matrixrow;
-	int matrixcolumn;
+	int value;
+	int rowindex;
+	int columnindex;
 };
 
 struct MatrixDataArray {
@@ -54,7 +54,8 @@ int UnorderedSearchSortedSequence(const int row[], int N, const int sequence[], 
 
 int binarySearch(int arr[], int size, int x);
 
-void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<MatrixMap> &outMatrixMap);
+// Binary search through all the data of matrix map and find the possible rows for sequence search
+void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<int> &vecRow);
 
 int compare(const void * a, const void * b);
 

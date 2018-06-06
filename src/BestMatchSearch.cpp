@@ -66,6 +66,16 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 		if (size > matrixarray.column)
 			throw std::runtime_error("Sequence size is more than matrix row size");
 
+		std::vector<int> vecRow{};
+
+		int mapsize = matrixarray.row * matrixarray.column;
+
+		BinarySearchMatrixMap(matrixarray.m_pMatrixMap, mapsize, sequence[0], vecRow);
+
+		if (vecRow.size() == 0)
+			return;
+
+
 		int max = 0;
 		int maxindex = -1;
 
@@ -74,7 +84,8 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 		GetSequencePrefixArray(sequence, size, pPrefixArray);
 
 		// iterate thorugh each row
-		for (int i = 0; i < matrixarray.row; i++) {
+		//for (int i = 0; i < matrixarray.row; i++) {
+		for (auto i : vecRow) {
 
 			auto sortrow = matrixarray.m_pSortMatrix[i];
 			

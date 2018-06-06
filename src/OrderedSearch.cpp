@@ -71,13 +71,24 @@ void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int
 		if(size > matrixarray.column)
 			throw std::runtime_error("Sequence size is more than matrix row size");
 
+		std::vector<int> vecRow{};
+
+		int mapsize = matrixarray.row * matrixarray.column;
+
+		// collect the possible rows using binary search of the first value of sequence from matrixmap array 
+		BinarySearchMatrixMap(matrixarray.m_pMatrixMap, mapsize, sequence[0], vecRow);
+
+		if (vecRow.size() == 0)
+			return;
+
 		int *pPrefixArray = new int[size];
 		
 		GetSequencePrefixArray(sequence, size, pPrefixArray);
 
 		// iterate thorugh each row
-		for (int i = 0; i < matrixarray.row; i++) {
-
+		//for (int i = 0; i < matrixarray.row; i++) {
+		for (auto i : vecRow) {
+			
 			auto sortrow = matrixarray.m_pSortMatrix[i];
 
 			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
@@ -88,7 +99,7 @@ void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int
 			//	continue;
 
 			auto row = matrixarray.m_pMatrix[i];
-			
+
 			// find sequence match count on row
 			// check for single sequence match 
 			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
@@ -99,6 +110,7 @@ void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int
 				vecIndex.push_back(i + 1);
 			}
 		}
+	
 
 		if (pPrefixArray) delete[] pPrefixArray;
 	}
@@ -396,7 +408,15 @@ int binarySearch(int arr[], int size, int x)
 	return -1;
 }
 
-void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<MatrixMap> &outMatrixMap) {
+/*
+Algorithm:
+1. First binary search the input value in the matrixmap array by comaring it matrix value
+2. get the index of that value in array
+3. Value might be repeated so go to first occurence of the value in array
+4. linearly walk through the array and look for same value
+5. If array value is equal provided value pick the corresponding row index.
+*/
+void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<int> &vecRow) {
 
 	int l = 0;
 	int r = size - 1;
@@ -411,13 +431,13 @@ void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std
 			break;
 
 		// Check if x is present at mid
-		if (matrixmap[m].matrixvalue == value) {
+		if (matrixmap[m].value == value) {
 			mapindex = m;
 			break;
 		}
 
 		// If x greater, ignore left half
-		if (matrixmap[m].matrixvalue < value)
+		if (matrixmap[m].value < value)
 			l = m + 1;
 
 		// If x is smaller, ignore right half
@@ -428,7 +448,42 @@ void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std
 	if (mapindex == -1)
 		return;
 
-	//TODO
+	// go to first match
+	while (mapindex > 0 ) {
+
+		if (matrixmap[mapindex - 1].value == value) {
+			
+			//if (matrixmap[mapindex].matrixrow != matrixmap[mapindex - 1].matrixrow)
+			//	vecRow.push_back(matrixmap[mapindex - 1].matrixrow);
+			mapindex--;
+		}
+		else
+			break;
+	}
+	
+	vecRow.push_back(matrixmap[mapindex].rowindex);
+	
+	// then collect row number up to last match
+	while (mapindex < size-1) {
+
+		if (matrixmap[mapindex + 1].value == value) {
+
+			// find that row is already exist in vector
+			auto it = std::find(vecRow.begin(), vecRow.end(), matrixmap[mapindex + 1].rowindex);
+
+			// if not there collect it
+			if (it == vecRow.end()) {
+				
+				vecRow.push_back(matrixmap[mapindex + 1].rowindex);
+			}
+			mapindex++;
+		}
+		else
+			break;
+	}
+
+	// sort the row index vector
+	std::sort(vecRow.begin(), vecRow.end());
 
 	return;
 }
