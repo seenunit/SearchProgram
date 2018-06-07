@@ -71,11 +71,10 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 		int mapsize = matrixarray.row * matrixarray.column;
 
 		BinarySearchMatrixMap(matrixarray.m_pMatrixMap, mapsize, sequence[0], vecRow);
-
+		
 		if (vecRow.size() == 0)
 			return;
-
-
+		
 		int max = 0;
 		int maxindex = -1;
 
@@ -121,4 +120,156 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 	}
 
 	return;
+}
+
+void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, int size, const int sequence[], int seqsize, std::vector<int> &vecRowIndex) {
+
+
+	MatrixMap *matrixmap = matrixarray.m_pMatrixMap;
+
+	int l = 0;
+	int r = size - 1;
+	
+	for (int i = 0; i < seqsize; i++)
+	{
+		bool bValfound = false;
+		int mapindex = -1;
+
+		while (l <= r)
+		{
+			int m = l + (r - l) / 2;
+
+			if (m >= size)
+				break;
+
+			// Check if x is present at mid
+			if (matrixmap[m].value == sequence[i]) {
+				mapindex = m;
+				break;
+			}
+
+			// If x greater, ignore left half
+			if (matrixmap[m].value < sequence[i])
+				l = m + 1;
+
+			// If x is smaller, ignore right half
+			else
+				r = m - 1;
+		}
+
+		if (mapindex != -1) {
+			bValfound = true;
+		}
+
+
+		if (bValfound == false)
+			continue;
+
+		// go to first match
+		while (mapindex > 0) {
+
+			if (matrixmap[mapindex - 1].value == sequence[i]) {
+
+				//if (matrixmap[mapindex].matrixrow != matrixmap[mapindex - 1].matrixrow)
+				//	vecRow.push_back(matrixmap[mapindex - 1].matrixrow);
+				mapindex--;
+			}
+			else
+				break;
+		}
+
+		std::vector<int> vecRow;
+
+		vecRow.push_back(matrixmap[mapindex].rowindex);
+
+		// then collect row number up to last match
+		while (mapindex < size - 1) {
+
+			if (matrixmap[mapindex + 1].value == sequence[i]) {
+
+				// find that row is already exist in vector
+				auto it = std::find(vecRow.begin(), vecRow.end(), matrixmap[mapindex + 1].rowindex);
+
+				// if not there collect it
+				if (it == vecRow.end()) {
+
+					vecRow.push_back(matrixmap[mapindex + 1].rowindex);
+				}
+				mapindex++;
+			}
+			else
+				break;
+		}
+
+		// sort the row index vector
+		std::sort(vecRow.begin(), vecRow.end());
+
+		int subseqsize = seqsize - i;
+
+		int *pPrefixArray = new int[subseqsize];
+
+		int maxrow = -1;
+		int maxj = -1;
+
+		GetSequencePrefixArray(&sequence[i], subseqsize, pPrefixArray);
+
+		for (size_t j = 0; j < vecRow.size(); j++)
+		{
+			auto row = matrixarray.m_pMatrix[vecRow[j]];
+						
+			int matches = SearchSequencePartial(row, matrixarray.column, &sequence[i], subseqsize, pPrefixArray);
+
+			if (matches == subseqsize) {
+				maxrow = vecRow[j]; 
+				maxj = subseqsize;
+				break;
+			}
+		}
+
+		if (maxj == seqsize) {
+			break;
+		}
+	}
+
+
+
+	return;
+}
+
+
+int SearchSequencePartial(const int row[], int N, const int sequence[], int M, const int seqprefix[]) {
+
+	int maxj = -1;
+
+	int i = 0;  // index for row[]
+	int j = 0;  // index for sequence[]
+	while (i < N)
+	{
+		if (sequence[j] == row[i])
+		{
+			j++;
+			i++;
+		}
+
+		if (j == M)
+		{
+			// reached end of sequence
+			return j;
+		}
+		else if (i < N && sequence[j] != row[i])// mismatch after j matches
+		{
+			// check for max sequence size match
+			if (j > maxj)
+				maxj = j;
+
+			// Do not match vecSeqPrefix[0..vecSeqPrefix[j-1]] integers,
+			// they will match anyway
+			if (j != 0)
+				j = seqprefix[j - 1];
+			else
+				i = i + 1;
+		}
+	}
+	// return -1 if unordered sequence not found
+	return maxj;
 }

@@ -47,6 +47,8 @@ int KMPSearchSequenceCount(const std::vector<int> &row, const std::vector<int> &
 
 int KMPSearchSequenceCount(const int row[], int N, const int sequence[], int M, const int seqprefix[], bool bCount = false);
 
+int SearchSequencePartial(const int row[], int N, const int sequence[], int M, const int seqprefix[]);
+
 // return true if sequence is presernt in row using sequence search
 int UnorderedSearchSortedSequence(const std::vector<int> &row, const std::vector<int> &sequence);
 
@@ -56,6 +58,9 @@ int binarySearch(int arr[], int size, int x);
 
 // Binary search through all the data of matrix map and find the possible rows for sequence search
 void BinarySearchMatrixMap(const MatrixMap matrixmap[], int size, int value, std::vector<int> &vecRow);
+
+// Binary search through all the data of matrix map and find the possible rows for sequence search
+void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, int size, const int sequence[], int seqsize, std::vector<int> &vecRow);
 
 int compare(const void * a, const void * b);
 
