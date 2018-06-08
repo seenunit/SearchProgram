@@ -87,6 +87,8 @@ void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, 
 	{
 		int subseqsize = seqsize - i;
 
+		// if alread maximum matches equal to current sequence size the 
+		// dont go for the further search
 		if (maxj == subseqsize) {
 			break;
 		}
@@ -95,6 +97,7 @@ void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, 
 		int l = 0;
 		int r = size - 1;
 
+		// binary searcht the each sequence value and get mapped row indices
 		while (l <= r)
 		{
 			int m = l + (r - l) / 2;
@@ -168,6 +171,7 @@ void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, 
 		{
 			auto row = matrixarray.m_pMatrix[vecRow[j]];
 						
+			// search the sequence and get number of matches for partial match cases
 			int matches = SearchSequencePartial(row, matrixarray.column, &sequence[i], subseqsize, pPrefixArray);
 
 			if (matches == subseqsize) {
@@ -230,6 +234,11 @@ int SearchSequencePartial(const int row[], int N, const int sequence[], int M, c
 				j = seqprefix[j - 1];
 			else
 				i = i + 1;
+		}
+		else if (i == N) { // to handle the last match in row
+			// check for max sequence size match
+			if (j > maxj)
+				maxj = j;
 		}
 	}
 	// return -1 if unordered sequence not found

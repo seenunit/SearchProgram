@@ -88,15 +88,6 @@ void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int
 		// iterate thorugh each row
 		//for (int i = 0; i < matrixarray.row; i++) {
 		for (auto i : vecRow) {
-			
-			auto sortrow = matrixarray.m_pSortMatrix[i];
-
-			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
-				continue;
-
-			//int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
-			//if (index == -1)
-			//	continue;
 
 			auto row = matrixarray.m_pMatrix[i];
 

@@ -88,14 +88,13 @@ void UnOrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 		//for (int i = 0; i < matrixarray.row; i++) {
 		for (auto i : vecRow) {
 
-			auto sortrow = matrixarray.m_pSortMatrix[i];
+			int *sortrow = new int[matrixarray.column];
+			for (int j = 0; j < matrixarray.column; j++)
+			{
+				sortrow[j] = matrixarray.m_pMatrix[i][j];
+			}
 
-			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
-				continue;
-
-			//int index = binarySearch(sortrow, matrixarray.column, sortsequence[0]);
-			//if (index == -1)
-			//	continue;
+			qsort(sortrow, matrixarray.column, sizeof(int), compare);
 
 			// find sequence match count on row
 			// check for single sequence match 
@@ -106,6 +105,8 @@ void UnOrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 			if (ret == 1) {
 				vecIndex.push_back(i + 1);
 			}
+
+			if (sortrow) delete[] sortrow;
 		}
 
 		if (sortsequence) delete[] sortsequence;

@@ -21,7 +21,7 @@ void TestMatrixSearch() {
 
 	// Hardcode the test data
 	std::vector<std::string> vecRowLines{
-		"23 45 12 78 34 27 987 465 23 45",
+		"25 45 12 78 34 23 987 465 23 45",
 		"23 45 12 57 9 64 92 753 10 34",
 		"12 57 -9 10 34 26 80 10 34 -89",
 		"-34 29 29 29 29 29 -78 -54 76 30",
@@ -45,7 +45,7 @@ void TestMatrixSearch() {
 	{ "searchBestMatch 23 45", std::vector<int>{1} },
 	{ "searchSequence 29 29", std::vector<int>{4, 5, 6} },
 	{ "searchBestMatch 29 29", std::vector<int>{4} },
-	{ "searchBestMatch 30 31 32 33", std::vector<int>{6} },
+	{ "searchBestMatch 30 31 32 33", std::vector<int>{4} },
 	{ "searchSequence 30 31 32 33", std::vector<int>{} },
 	{ "searchUnordered 30 31 32 33", std::vector<int>{} },
 	{ "searchSequence 12 57 -9 10 34 26 80 10 34 -89 -1", std::vector<int>{} },

@@ -155,18 +155,9 @@ void MatrixData::IntializeMatrixArray(int **pMatrix) {
 	try {
 		for (int i = 0; i < m_row; i++)
 		{
-			int *sortrow = new int[m_column];
-			for (int j = 0; j < m_column; j++)
-			{
-				sortrow[j] = pMatrix[i][j];
-			}
-
-			qsort(sortrow, m_column, sizeof(int), compare);
-
 			for (int j = 0; j < m_column; j++)
 			{
 				m_MatrixArray.m_pMatrix[i][j] = pMatrix[i][j];
-				m_MatrixArray.m_pSortMatrix[i][j] = sortrow[j];
 				
 				// fill matrix map
 				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].value = pMatrix[i][j];
@@ -174,7 +165,6 @@ void MatrixData::IntializeMatrixArray(int **pMatrix) {
 				m_MatrixArray.m_pMatrixMap[(i*m_column + j)].columnindex = j;
 			}
 
-			if (sortrow) delete[] sortrow;
 		}
 
 		// sort the matrix map according data values
