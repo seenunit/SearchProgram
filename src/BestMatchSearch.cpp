@@ -66,54 +66,7 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 		if (size > matrixarray.column)
 			throw std::runtime_error("Sequence size is more than matrix row size");
 
-		std::vector<int> vecRow{};
-
-		int mapsize = matrixarray.row * matrixarray.column;
-
-		BinarySearchMatrixMap(matrixarray.m_pMatrixMap, mapsize, sequence[0], vecRow);
-		
-		if (vecRow.size() == 0)
-			return;
-		
-		int max = 0;
-		int maxindex = -1;
-
-		int *pPrefixArray = new int[size];
-
-		GetSequencePrefixArray(sequence, size, pPrefixArray);
-
-		// iterate thorugh each row
-		//for (int i = 0; i < matrixarray.row; i++) {
-		for (auto i : vecRow) {
-
-			auto sortrow = matrixarray.m_pSortMatrix[i];
-			
-			if (std::binary_search(sortrow, sortrow + matrixarray.column, sequence[0]) == false)
-				continue;
-
-			//int index = binarySearch(sortrow, matrixarray.column, sequence[0]);
-			//if (index == -1)
-			//	continue;
-
-			auto row = matrixarray.m_pMatrix[i];
-
-			// find sequence match count on row
-			// check for single sequence match 
-			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
-			int count = KMPSearchSequenceCount(row, matrixarray.column, sequence, size, pPrefixArray, true);
-
-			if (count > max) {
-				max = count;
-				maxindex = i + 1;
-			}
-		}
-
-		// add row index to vector if ret is sucessful
-		if (maxindex > -1) {
-			vecIndex.push_back(maxindex);
-		}
-
-		if (pPrefixArray) delete[] pPrefixArray;
+		BinarySearchSequenceSearchforBestMatch(matrixarray, sequence, size, vecIndex);
 	}
 	catch (std::exception ex) {
 		std::cout << "Error: Best match of sequence failed due to: " << ex.what() << std::endl;
@@ -122,18 +75,25 @@ void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const i
 	return;
 }
 
-void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, int size, const int sequence[], int seqsize, std::vector<int> &vecRowIndex) {
-
-
+void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, const int sequence[], int seqsize, std::vector<int> &vecRowIndex) {
+	
 	MatrixMap *matrixmap = matrixarray.m_pMatrixMap;
+	int size = matrixarray.row * matrixarray.column;
 
-	int l = 0;
-	int r = size - 1;
+	int maxrow = -1;
+	int maxj = -1;
 	
 	for (int i = 0; i < seqsize; i++)
 	{
-		bool bValfound = false;
+		int subseqsize = seqsize - i;
+
+		if (maxj == subseqsize) {
+			break;
+		}
+
 		int mapindex = -1;
+		int l = 0;
+		int r = size - 1;
 
 		while (l <= r)
 		{
@@ -157,12 +117,7 @@ void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, 
 				r = m - 1;
 		}
 
-		if (mapindex != -1) {
-			bValfound = true;
-		}
-
-
-		if (bValfound == false)
+		if (mapindex == -1)
 			continue;
 
 		// go to first match
@@ -204,12 +159,8 @@ void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, 
 		// sort the row index vector
 		std::sort(vecRow.begin(), vecRow.end());
 
-		int subseqsize = seqsize - i;
-
+		// get prefix array
 		int *pPrefixArray = new int[subseqsize];
-
-		int maxrow = -1;
-		int maxj = -1;
 
 		GetSequencePrefixArray(&sequence[i], subseqsize, pPrefixArray);
 
@@ -224,15 +175,26 @@ void BinarySearchSequenceSearchforBestMatch(const MatrixDataArray& matrixarray, 
 				maxj = subseqsize;
 				break;
 			}
+
+			if (matches > maxj) {
+				maxrow = vecRow[j];
+				maxj = matches;
+			}
 		}
 
-		if (maxj == seqsize) {
+		if (pPrefixArray) {
+			delete[] pPrefixArray; 
+			pPrefixArray = nullptr;
+		}
+
+		if (maxj == subseqsize) {
 			break;
 		}
 	}
 
-
-
+	if(maxrow != -1 && maxj != -1)
+		vecRowIndex.push_back(maxrow + 1);
+	
 	return;
 }
 

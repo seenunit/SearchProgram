@@ -27,8 +27,9 @@ void TestMatrixSearch() {
 		"-34 29 29 29 29 29 -78 -54 76 30",
 		"49 39 29 29 29 29 19 9 59 69",
 		"29 29 29 -78 -54 76 30 -34 29 29",
-		"35 48 35 35 48 35 35 48 35 35",
-		"35 48 35 35 48 35 35 48 35 26"
+		"35 48 35 35 48 35 22 45 -10 35",
+		"35 48 35 35 48 35 35 48 35 26",
+		"56 26 80 95 34 27 48 35 29 45"
 	};
 
 	std::vector<TestData> tests{
@@ -38,17 +39,24 @@ void TestMatrixSearch() {
 	{ "searchUnordered 29 29 29", std::vector<int>{4, 5, 6} },
 	{ "searchSequence 10 34", std::vector<int>{2,3} },
 	{ "searchSequence 29 29 29 -78", std::vector<int>{4,6} },
-	{ "searchUnordered 10 10 34 10", std::vector<int>{} },	
+	{ "searchUnordered 10 10 34 10", std::vector<int>{} },
 	{ "searchUnordered 29 29 29 29 29 29 29", std::vector<int>{} },
 	{ "searchUnordered 987 465 23 45 -54", std::vector<int>{} },
 	{ "searchBestMatch 23 45", std::vector<int>{1} },
 	{ "searchSequence 29 29", std::vector<int>{4, 5, 6} },
 	{ "searchBestMatch 29 29", std::vector<int>{4} },
-	{ "searchBestMatch 30 31 32 33", std::vector<int>{} },
+	{ "searchBestMatch 30 31 32 33", std::vector<int>{6} },
 	{ "searchSequence 30 31 32 33", std::vector<int>{} },
 	{ "searchUnordered 30 31 32 33", std::vector<int>{} },
 	{ "searchSequence 12 57 -9 10 34 26 80 10 34 -89 -1", std::vector<int>{} },
-	{ "searchSequence 29 29 29 -78 -54 76 30", std::vector<int>{4, 6} }
+	{ "searchSequence 29 29 29 -78 -54 76 30", std::vector<int>{4, 6} },
+	{ "searchBestMatch 35 48 35 29", std::vector<int>{7}}, // first best match row
+	{ "searchBestMatch 20 72 41 95", std::vector<int>{9} }, // single last match - only 95
+	{ "searchBestMatch -34 29 19 9 64", std::vector<int>{5} },// middle best match
+	{ "searchBestMatch 56 26 80 10", std::vector<int>{9} }, // first best match compared to last best match
+	{ "searchBestMatch 49 53 90 17", std::vector<int>{5} }, // single first match - only 49
+	{ "searchBestMatch 50 53 90 17", std::vector<int>{} }, // no match found
+	{ "searchBestMatch 50 48 35 29", std::vector<int>{9} } // last best match
 	};
 
 	// Create and intialize matrix
@@ -124,7 +132,10 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 
 	int  k = 0;
 
-	srand(time(0));
+	// supress cout statements
+	std::cout.setstate(std::ios_base::failbit);
+
+	srand((unsigned int) time(nullptr));
 	// Use current time as seed for random generator	
 	for (int i = 0; i < testsize; i++)
 	{
@@ -149,12 +160,6 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 			testdata.sequence.push_back(rand());
 		}
 		
-
-		// supress cout statements
-		//std::cout.setstate(std::ios_base::failbit);
-
-		std::cout << testdata.searchtype;
-
 		int *pSequence = new int[sequencesize];
 		for (int j = 0; j < sequencesize; j++)
 		{
@@ -184,10 +189,10 @@ void TestRandomMatrixSearch(MatrixData &matrix) {
 		timefile << ss.str();
 
 		ss.clear();
-
-		// Revert back to original cout state
-		//std::cout.clear();
 	}
+	
+	// Revert back to original cout state
+	std::cout.clear();
 	
 	double averagetime = totaltime / testsize;
 
