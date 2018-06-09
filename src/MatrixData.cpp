@@ -194,9 +194,9 @@ void MatrixData::SearchSequence(const std::string &searchType, const std::vector
 
 	try {
 		
-		MatrixSearch *pSearch = GetMatrixSearch(searchType);
+		SetMatrixSearch(searchType);
 
-		if (pSearch) {
+		if (m_pSearch) {
 
 			if (searchType == "searchSequence") {
 
@@ -208,12 +208,12 @@ void MatrixData::SearchSequence(const std::string &searchType, const std::vector
 					pSequence[i] = sequence[i];
 				}
 
-				pSearch->SearchSequence(m_MatrixArray, pSequence, size, vecIndex);
+				m_pSearch->SearchSequence(m_MatrixArray, pSequence, size, vecIndex);
 
 				delete[] pSequence;
 			}
 			else {
-				pSearch->SearchSequence(m_Matrix, m_SortedMatrix, sequence, vecIndex);
+				m_pSearch->SearchSequence(m_Matrix, m_SortedMatrix, sequence, vecIndex);
 			}
 		}
 		else {
@@ -231,14 +231,11 @@ void MatrixData::SearchSequence(const std::string &searchType, const std::vector
 void MatrixData::SearchSequence(const std::string &searchType, const int sequence[], int size, std::vector<int> &vecIndex) {
 	try {
 
-		MatrixSearch *pSearch = GetMatrixSearch(searchType);
+		SetMatrixSearch(searchType);
 
-		if (pSearch) {
-
-
-				pSearch->SearchSequence(m_MatrixArray, sequence, size, vecIndex);
-
-
+		if (m_pSearch) {
+			
+			m_pSearch->SearchSequence(m_MatrixArray, sequence, size, vecIndex);
 
 		}
 		else {
@@ -253,19 +250,18 @@ void MatrixData::SearchSequence(const std::string &searchType, const int sequenc
 	return;
 }
 
-MatrixSearch* MatrixData::GetMatrixSearch(const std::string &searchType) {
-
-	MatrixSearch *pSearch = nullptr;
+void MatrixData::SetMatrixSearch(const std::string &searchType) {
 
 	if (searchType == "searchSequence") {
-		pSearch = new OrderedSearch();
+		OrderedSearch search;
+		m_pSearch = &search;
 	}
 	else if (searchType == "searchUnordered") {
-		pSearch = new UnOrderedSearch();
+		UnOrderedSearch search;
+		m_pSearch = &search;
 	}
 	else if (searchType == "searchBestMatch") {
-		pSearch = new BestMatchSearch();
+		BestMatchSearch search;
+		m_pSearch = &search;
 	}
-
-	return pSearch;
 }

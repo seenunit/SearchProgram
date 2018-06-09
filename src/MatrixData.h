@@ -55,12 +55,13 @@ public:
 	void IntializeMatrixArray(int **ppMatrix);
 	void SearchSequence(const std::string &searchType, const std::vector<int> &sequence, std::vector<int> &vecIndex);
 	void SearchSequence(const std::string &searchType, const int sequence[], int size, std::vector<int> &vecIndex);
-	MatrixSearch *GetMatrixSearch(const std::string &searchType);
+	void SetMatrixSearch(const std::string &searchType);
 	void GetSearchInfo(const std::string &searchLine, std::string &searchType, std::vector<int> &sequence);
 
 	void PrintMatrixData();
 
 private:
+	MatrixSearch * m_pSearch;
 	MatrixDataType m_Matrix;
 	MatrixDataType m_SortedMatrix;
 	MatrixDataArray m_MatrixArray;
