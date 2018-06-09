@@ -3,13 +3,13 @@
 
 #include "MatrixSearch.h"
 class UnOrderedSearch :
-    public MatrixSearch
+	public MatrixSearch
 {
 public:
-    UnOrderedSearch();
-    ~UnOrderedSearch();
+	UnOrderedSearch();
+	~UnOrderedSearch();
 
-    void SearchSequence(const MatrixDataType &matrix, const MatrixDataType &sortedMatrix, const std::vector<int> &sequence, std::vector<int> &vecIndex);
+	void SearchSequence(const MatrixDataType &matrix, const MatrixDataType &sortedMatrix, const std::vector<int> &sequence, std::vector<int> &vecIndex);
 	void SearchSequence(const MatrixDataArray& matrixarray, const int* sequence, int size, std::vector<int> &vecIndex);
 };
 

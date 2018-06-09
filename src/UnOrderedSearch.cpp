@@ -24,12 +24,12 @@ void UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 		if (sequence.size() > matrix[0].size())
 			throw std::runtime_error("Sequence size is more than matrix row size");
 
-        std::vector<int> sortedSequence = sequence;
+		std::vector<int> sortedSequence = sequence;
 
-        // sort the sequence
-        sort(sortedSequence.begin(), sortedSequence.end());
+		// sort the sequence
+		sort(sortedSequence.begin(), sortedSequence.end());
 
-        // search the sequence elements in each row
+		// search the sequence elements in each row
 		for (size_t i = 0; i < sortedMatrix.size(); i++) {
 
 			auto row = sortedMatrix[i];
@@ -47,9 +47,9 @@ void UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 			int ret = UnorderedSearchSortedSequence(subrow, sortedSequence);
 
 			// add row index to vector if ret is sucessful
-            if (ret == 1) {
-                vecIndex.push_back(i + 1);
-            }
+			if (ret == 1) {
+				vecIndex.push_back(i + 1);
+			}
 		}
 	}
 	catch (std::exception ex) {
@@ -57,7 +57,7 @@ void UnOrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 	}
 	
 
-    return;
+	return;
 }
 
 void UnOrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int* sequence, int size, std::vector<int> &vecIndex) {
@@ -126,9 +126,9 @@ int LinearSearchValueCount(const std::vector<int> &row, int x, bool bCount) {
 			count++;
 		}
 
-        // break the loop for first match
-        if (bCount == false && count > 0)
-            break;
+		// break the loop for first match
+		if (bCount == false && count > 0)
+			break;
 	}
 
 	return count;
@@ -137,13 +137,13 @@ int LinearSearchValueCount(const std::vector<int> &row, int x, bool bCount) {
 // return row index of the value at first encounter
 int LinearSearchValue(const std::vector<int> &row, int x) {
 
-    for (size_t i = 0; i < row.size(); i++) {
-        if (row[i] == x)
-            return i;
-    }
+	for (size_t i = 0; i < row.size(); i++) {
+		if (row[i] == x)
+			return i;
+	}
 
-    // return -1 if value not find
-    return -1;
+	// return -1 if value not find
+	return -1;
 }
 
 void InsertionSort(int arr[], int n)

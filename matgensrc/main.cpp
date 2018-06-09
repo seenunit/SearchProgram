@@ -3,28 +3,28 @@
 
 int main(int argc, char **argv) {
 
-    int row, column;
+	int row, column;
 
-    if (argc == 1 || argc == 2) {
+	if (argc == 1 || argc == 2) {
 
-        std::cout << "Enter the row, column values and input text file as arguments" << std::endl;
-        std::cout << "./MatrixGenerator row column" << std::endl;
-    }
-    else if(argc == 3 || argc == 4 ){
+		std::cout << "Enter the row, column values and input text file as arguments" << std::endl;
+		std::cout << "./MatrixGenerator row column" << std::endl;
+	}
+	else if(argc == 3 || argc == 4 ){
 
-        row = atoi(argv[1]);
-        column = atoi(argv[2]);
+		row = atoi(argv[1]);
+		column = atoi(argv[2]);
 
-        std::string filename = "matrix.dat";
+		std::string filename = "matrix.dat";
 
 		std::vector<std::string> vecIntValues;
 		MatrixGenerator matGen;
 
 		bool bCreateText = false;
 
-        if (argc == 4) {
+		if (argc == 4) {
 
-            std::string infilename = argv[3];
+			std::string infilename = argv[3];
 
 			if (infilename == "-text") {
 				bCreateText = true;
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 				std::cin.get();
 				return 0;
 			}
-        }
+		}
 
 		int ret = matGen.GenerateRandomMatrixFile(filename, row, column, bCreateText);
 
@@ -61,10 +61,10 @@ int main(int argc, char **argv) {
 			std::cout << "Warning: failed to generate the matrix file" << std::endl;
 		}
 
-    }
+	}
 
-    std::cout << "Press any key to exit";
-    std::cin.get();
+	std::cout << "Press any key to exit";
+	std::cin.get();
 
-    return 0;
+	return 0;
 }

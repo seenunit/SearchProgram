@@ -58,7 +58,7 @@ void BestMatchSearch::SearchSequence(const MatrixDataType &matrix, const MatrixD
 		std::cout << "Error: Best match of sequence failed due to: " << ex.what() << std::endl;
 	}
 
-    return;
+	return;
 }
 
 void BestMatchSearch::SearchSequence(const MatrixDataArray& matrixarray, const int* sequence, int size, std::vector<int> &vecIndex) {

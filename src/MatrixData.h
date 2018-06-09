@@ -11,9 +11,9 @@
 class MatrixData
 {
 public:
-    MatrixData() {}
+	MatrixData() {}
 
-    MatrixData(int row, int column) : m_row(row), m_column(column) {
+	MatrixData(int row, int column) : m_row(row), m_column(column) {
 		m_MatrixArray.row = m_row;
 		m_MatrixArray.column = m_column;
 		m_MatrixArray.m_pMatrixMap = new MatrixMap[m_row * m_column];
@@ -26,9 +26,9 @@ public:
 			m_MatrixArray.m_pMatrix[i] = new int[m_column] {0};
 			m_MatrixArray.m_pSortMatrix[i] = new int[m_column] {0};
 		}
-    }
+	}
 
-    ~MatrixData() {
+	~MatrixData() {
 		if (m_MatrixArray.m_pMatrix != nullptr && m_MatrixArray.m_pSortMatrix != nullptr) {
 			for (int i = 0; i < m_row; i++)
 			{
@@ -51,21 +51,21 @@ public:
 
 public:
 	void IntializeMatrix(const std::vector<std::string> &vecStrings);
-    void IntializeMatrix(const MatrixDataType &vecRows);
+	void IntializeMatrix(const MatrixDataType &vecRows);
 	void IntializeMatrixArray(int **ppMatrix);
-    void SearchSequence(const std::string &searchType, const std::vector<int> &sequence, std::vector<int> &vecIndex);
+	void SearchSequence(const std::string &searchType, const std::vector<int> &sequence, std::vector<int> &vecIndex);
 	void SearchSequence(const std::string &searchType, const int sequence[], int size, std::vector<int> &vecIndex);
-    MatrixSearch *GetMatrixSearch(const std::string &searchType);
+	MatrixSearch *GetMatrixSearch(const std::string &searchType);
 	void GetSearchInfo(const std::string &searchLine, std::string &searchType, std::vector<int> &sequence);
 
-    void PrintMatrixData();
+	void PrintMatrixData();
 
 private:
-    MatrixDataType m_Matrix;
-    MatrixDataType m_SortedMatrix;
+	MatrixDataType m_Matrix;
+	MatrixDataType m_SortedMatrix;
 	MatrixDataArray m_MatrixArray;
-    int m_row{};
-    int m_column{};
+	int m_row{};
+	int m_column{};
 };
 
 void TestMatrixSearch();

@@ -4,32 +4,32 @@
 
 std::vector<std::string> FileRead(std::string strFileName) {    
 
-    std::vector<std::string>  vecString;
+	std::vector<std::string>  vecString;
 
-    std::ifstream infile(strFileName);
+	std::ifstream infile(strFileName);
 
-    if (infile.is_open()) {
-        std::string strLine;
-        while (getline(infile, strLine)) {
-            vecString.push_back(strLine);
-        }
-    }
-        
-    return vecString;
+	if (infile.is_open()) {
+		std::string strLine;
+		while (getline(infile, strLine)) {
+			vecString.push_back(strLine);
+		}
+	}
+		
+	return vecString;
 }
 
 int main(int argc, char **argv) {
 
-    std::string strDataFile;
-    MatrixDataType vecRowLines;
-    int row, column;
-    MatrixGenerator matGen;
+	std::string strDataFile;
+	MatrixDataType vecRowLines;
+	int row, column;
+	MatrixGenerator matGen;
 
-    if (argc == 1) {
-        std::cout << "Specify matrix data (.dat) file as argument" << std::endl;
-        std::cout << "./SearchProgram matrix.dat <search.txt>" << std::endl;
-    }
-    else if (argc == 2 || argc == 3 || argc == 4) {
+	if (argc == 1) {
+		std::cout << "Specify matrix data (.dat) file as argument" << std::endl;
+		std::cout << "./SearchProgram matrix.dat <search.txt>" << std::endl;
+	}
+	else if (argc == 2 || argc == 3 || argc == 4) {
 
 		strDataFile = argv[1];
 
@@ -56,18 +56,18 @@ int main(int argc, char **argv) {
 			}
 		}		
 
-        // Validate and read the matrix file
-        //vecRowLines = FileRead(strDataFile);
+		// Validate and read the matrix file
+		//vecRowLines = FileRead(strDataFile);
 		std::cout << "Reading the matrix file" << std::endl;
-        //int ret = matGen.ReadMatrixFile(strDataFile, row, column, vecRowLines);
+		//int ret = matGen.ReadMatrixFile(strDataFile, row, column, vecRowLines);
 		int **ppMatrix = nullptr;
 		int ret = matGen.ReadMatrixFile(strDataFile, row, column, ppMatrix);
 
-        if (ret == 1) {
-            
+		if (ret == 1) {
+			
 			std::cout << "intializing the matrix" << std::endl;
-            // Create and intialize matrix
-            MatrixData matrix(row, column);
+			// Create and intialize matrix
+			MatrixData matrix(row, column);
 			//matrix.IntializeMatrix(vecRowLines);
 			//matrix.IntializeMatrixArray();
 			matrix.IntializeMatrixArray(ppMatrix);
@@ -178,10 +178,10 @@ int main(int argc, char **argv) {
 					printIndices(vecIndex);
 				}
 			}
-        }
-        else {
-            std::cout << "Error: failed to read matrix file" << std::endl;
-        }
+		}
+		else {
+			std::cout << "Error: failed to read matrix file" << std::endl;
+		}
 		if (ppMatrix) {
 			for (int i = 0; i < row; i++)
 			{
@@ -191,14 +191,14 @@ int main(int argc, char **argv) {
 
 			ppMatrix = nullptr;
 		}
-    }
-    else {
-        std::cout << "Error: Not a valid arguments" << std::endl;
-    }
+	}
+	else {
+		std::cout << "Error: Not a valid arguments" << std::endl;
+	}
 
-    std::cout << "Press any key to exit";
+	std::cout << "Press any key to exit";
 
-    std::cin.get();
+	std::cin.get();
 
-    return 0;
+	return 0;
 }

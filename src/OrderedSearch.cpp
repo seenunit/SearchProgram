@@ -48,7 +48,7 @@ void OrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDat
 			std::vector<int> subrow(it, row.end());
 
 			// find sequence match count on row
-            // check for single sequence match 
+			// check for single sequence match 
 			//int count = LinearSearchSequenceCount(row, vecSequnce, false);
 			int count = KMPSearchSequenceCount(subrow, sequence, vecPrefix, false);
 
@@ -62,7 +62,7 @@ void OrderedSearch::SearchSequence(const MatrixDataType &matrix, const MatrixDat
 		std::cout << "Error: Ordered match of sequence failed due to: " << ex.what() << std::endl;
 	}
 
-    return;
+	return;
 }
 
 void OrderedSearch::SearchSequence(const MatrixDataArray& matrixarray, const int* sequence, int size, std::vector<int> &vecIndex) {
@@ -145,10 +145,10 @@ int LinearSearchSequenceCount(const std::vector<int> &row, const std::vector<int
 				// if all elements are matching then increase the match count
 				if (j == sequence.size() - 1)
 					count++;
-                
-                // break the loop for first sequence match
-                if (bCount == false && count > 0)
-                    break;
+				
+				// break the loop for first sequence match
+				if (bCount == false && count > 0)
+					break;
 			}
 		}
 	}

@@ -71,7 +71,7 @@ int compareMatrixMapKey(const void *a, const void * b);
 class MatrixSearch
 {
 public:
-    virtual void SearchSequence(const MatrixDataType &, const MatrixDataType &, const std::vector<int> &, std::vector<int> &) = 0;
+	virtual void SearchSequence(const MatrixDataType &, const MatrixDataType &, const std::vector<int> &, std::vector<int> &) = 0;
 	virtual void SearchSequence(const MatrixDataArray&, const int*, int size, std::vector<int> &) = 0;
 };
 

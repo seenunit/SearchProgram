@@ -16,37 +16,37 @@ MatrixGenerator::~MatrixGenerator()
 
 inline std::string &negateLine(std::string &line) {
 
-    for (size_t i = 0; i < line.length(); i++)
-    {
-        line[i] = ~line[i];
-    }
+	for (size_t i = 0; i < line.length(); i++)
+	{
+		line[i] = ~line[i];
+	}
 
-    return line;
+	return line;
 };
 
 int MatrixGenerator::GenerateMatrixFile(const std::string &filename, int row, int column, const std::vector<std::string> &vecIntValues) {
 
-    std::vector<std::string>  vecString;
+	std::vector<std::string>  vecString;
 
-    std::string strRW = std::to_string(row) + " " + std::to_string(column);
-    vecString.push_back(strRW);
+	std::string strRW = std::to_string(row) + " " + std::to_string(column);
+	vecString.push_back(strRW);
 
-    for (int i = 0; i < row; i++)
-    {
+	for (int i = 0; i < row; i++)
+	{
 		std::string line = vecIntValues[i];
-        vecString.push_back(line);
-    }
+		vecString.push_back(line);
+	}
 
-    // write the file with the modified contents
-    {
-        std::ofstream outfile(filename);         
+	// write the file with the modified contents
+	{
+		std::ofstream outfile(filename);         
 		for (auto line : vecString) {
 			std::string nline = m_key + line;
 			outfile << negateLine(nline) << '\n';
 		}
-    }
+	}
 
-    return 1;
+	return 1;
 }
 
 int MatrixGenerator::GenerateRandomMatrixFile(const std::string &filename, int row, int column, bool bText) {
@@ -92,55 +92,55 @@ int MatrixGenerator::GenerateRandomMatrixFile(const std::string &filename, int r
 }
 
 int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &column, std::vector<std::vector<int>> &outMatrix) {
-    
-    std::ifstream infile(filename);
+	
+	std::ifstream infile(filename);
 
-    if (infile.is_open()) {
+	if (infile.is_open()) {
 
-        std::string strLine;
-        
-        // get row and column from file
-        getline(infile, strLine);
+		std::string strLine;
+		
+		// get row and column from file
+		getline(infile, strLine);
 
-        std::string line(negateLine(strLine));
+		std::string line(negateLine(strLine));
 
-        std::string key(line.begin(), line.begin() + m_key.length());
+		std::string key(line.begin(), line.begin() + m_key.length());
 
-        if (key == m_key) {
+		if (key == m_key) {
 
-            std::string sequnence(line.begin() + m_key.length(), line.end());
+			std::string sequnence(line.begin() + m_key.length(), line.end());
 			std::vector<int> vecRW{};
 			extractStringValues<int>(sequnence, vecRW);
 
-            row = vecRW[0];
-            column = vecRW[1];
-        }
-        else {
-            return 0;
-        }
+			row = vecRW[0];
+			column = vecRW[1];
+		}
+		else {
+			return 0;
+		}
 
-        for (int i = 0; i < row && getline(infile, strLine); i++) {
+		for (int i = 0; i < row && getline(infile, strLine); i++) {
 
-            std::string line(negateLine(strLine));
-                   
-            std::string key(line.begin(), line.begin() + m_key.length());
-            
-            if (key == m_key) {
-                std::string sequnence(line.begin() + m_key.length(), line.end());
+			std::string line(negateLine(strLine));
+				   
+			std::string key(line.begin(), line.begin() + m_key.length());
+			
+			if (key == m_key) {
+				std::string sequnence(line.begin() + m_key.length(), line.end());
 				std::vector<int> vecIntegers{};
 				extractStringValues<int>(sequnence, vecIntegers);
 				outMatrix.push_back(vecIntegers);
-            }
-            else {
-                return 0;
-            }
-        }
-    }
-    else {
-        return 0;
-    }
+			}
+			else {
+				return 0;
+			}
+		}
+	}
+	else {
+		return 0;
+	}
 
-    return 1;
+	return 1;
 }
 
 int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &column, int **& outMatrix) {
@@ -207,17 +207,17 @@ int MatrixGenerator::ReadMatrixFile(const std::string &filename, int &row, int &
 
 int MatrixGenerator::ReadSearchFile(const std::string &filename, std::vector<std::string> &outStrings) {
 
-    std::ifstream infile(filename);
+	std::ifstream infile(filename);
 
-    if (infile.is_open()) {
+	if (infile.is_open()) {
 		std::string strLine{};
-        while (getline(infile, strLine)) {
-            outStrings.push_back(strLine);
-        }
-    }
-    else {
-        return 0;
-    }
+		while (getline(infile, strLine)) {
+			outStrings.push_back(strLine);
+		}
+	}
+	else {
+		return 0;
+	}
 
-    return 1;
+	return 1;
 }

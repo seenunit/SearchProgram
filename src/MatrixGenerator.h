@@ -10,29 +10,29 @@
 class MatrixGenerator
 {
 public:
-    MatrixGenerator();
-    ~MatrixGenerator();
+	MatrixGenerator();
+	~MatrixGenerator();
 
 public:
-    int GenerateMatrixFile(const std::string &filename, int row, int column, const std::vector<std::string> &vecIntValues);
+	int GenerateMatrixFile(const std::string &filename, int row, int column, const std::vector<std::string> &vecIntValues);
 
 	int GenerateRandomMatrixFile(const std::string &filename, int row, int column, bool bText = false);
 
-    int ReadMatrixFile(const std::string &filename, int &row, int &column, std::vector<std::vector<int>> &outMatrix);
+	int ReadMatrixFile(const std::string &filename, int &row, int &column, std::vector<std::vector<int>> &outMatrix);
 
 	int ReadMatrixFile(const std::string &filename, int &row, int &column, int ** &outMatrix);
 
-    int ReadSearchFile(const std::string &filename, std::vector<std::string> &outStrings);
+	int ReadSearchFile(const std::string &filename, std::vector<std::string> &outStrings);
 
 private:
-    std::string m_key{ "seenunit" };
+	std::string m_key{ "seenunit" };
 };
 
 template<class T>
 void extractStringValues(const std::string &str, std::vector<T> &vecValues)
 {
 	// Storing the string into string stream
-    std::stringstream ss(str);
+	std::stringstream ss(str);
 
 	// Running loop till the end of the stream 
 	std::string temp;
@@ -50,7 +50,7 @@ void extractStringValues(const std::string &str, std::vector<T> &vecValues)
 		temp = "";
 	}
 
-    return;
+	return;
 }
 
 #endif //MATRIXGENERATOR
